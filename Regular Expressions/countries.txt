@@ -1,0 +1,5 @@
+Regular Expression:
+"(.*?)"\s\((.*?)\)\s*({(.*?)})?\s*(.*)
+
+Substitution:
+$1,$2,$4,$5
