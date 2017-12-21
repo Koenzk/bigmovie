@@ -38,13 +38,13 @@ public class Main
                 header = new String[]{};
                 break;
             case "movies":
-                pattern = "";
-                substitution = "";
+                pattern = "\\s([^\"].*[^\"])\\s\\((.{4})\\)\\s(\\((.{1,2})\\))?\\s*(\\{\\{(.*?)\\}})?\\s*(\\d{4}|\\?{4})";
+                substitution = "$1-$2-$4-$6-$7";
                 header = new String[]{};
                 break;
             case "series":
-                pattern = "";
-                substitution = "";
+                pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{\\{(.*?)\\}})?\\s*(.*)";
+                substitution = "$1-$2-$4-$6-$7";
                 header = new String[]{};
                 break;
             case "actors":
@@ -90,7 +90,7 @@ public class Main
         {
             int count = 0; // TODO: Remove count, in de huidige situatie doorloopt hij alleen de eerste 150 regels van het plaintext bestand.
 
-            csvWriter.writeNext(header); // TODO: Nodig?
+            //csvWriter.writeNext(header); // TODO: Nodig?
 
             while (br.readLine() != null && count < 150)
             {
