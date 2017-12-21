@@ -1,20 +1,17 @@
 package com.Parser;
 
-import com.opencsv.CSVWriter;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main
 {
+    // Main method
     public static void main(String[] args) throws IOException
     {
-        // Constants
-        String IMDBpath = "/home/koenzk/Downloads/IMDB/"; // TODO: !!
-
         // Variables
+        String IMDBpath = "/home/koenzk/Downloads/IMDB/"; // TODO: !!
         String pattern;
         String substitution;
         String[] header;
@@ -33,18 +30,18 @@ public class Main
         switch (choice)
         {
             case "countries":
-                pattern = "\"?(.*?)\"?\\s\\((\\d{4}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
-                substitution = "$1-$2-$4-$6-$8-$9";
+                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
+                substitution = "\"$1\",$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
                 header = new String[]{};
                 break;
             case "movies":
-                pattern = "\\s([^\"].*[^\"])\\s\\((.{4})\\)\\s(\\((.{1,2})\\))?\\s*(\\{\\{(.*?)\\}})?\\s*(\\d{4}|\\?{4})";
-                substitution = "$1-$2-$4-$6-$7";
+                pattern = "";
+                substitution = "";
                 header = new String[]{};
                 break;
             case "series":
-                pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{\\{(.*?)\\}})?\\s*(.*)";
-                substitution = "$1-$2-$4-$6-$7";
+                pattern = "\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{(.*?)\\}\\})?\\s*(.*)";
+                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$7\"";
                 header = new String[]{};
                 break;
             case "actors":
@@ -73,8 +70,8 @@ public class Main
                 header = new String[]{};
                 break;
             case "running-times":
-                pattern = "";
-                substitution = "";
+                pattern = "(?:\")(.*)(?:\") \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d))(?:.*)";
+                substitution = "\\1, \\2, \\3, \\4";
                 header = new String[]{};
                 break;
             default:
@@ -86,28 +83,8 @@ public class Main
                 break;
         }
 
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
-        {
-            int count = 0; // TODO: Remove count, in de huidige situatie doorloopt hij alleen de eerste 150 regels van het plaintext bestand.
-
-            //csvWriter.writeNext(header); // TODO: Nodig?
-
-            while (br.readLine() != null && count < 150)
-            {
-                String nextLine = br.readLine();
-
-                Pattern r = Pattern.compile(pattern);
-
-                Matcher matcher = r.matcher(nextLine);
-
-                String result = matcher.replaceAll(substitution);
-
-                String[] line = result.split("-");
-
-                csvWriter.writeNext(line, true);
-
-                count++;
-            }
-        }
+        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br);
+        parser.parse();
     }
+
 }
