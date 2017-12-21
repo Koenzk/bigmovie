@@ -29,8 +29,8 @@ public class Main {
         switch (choice)
         {
             case "countries":
-                pattern = "\"?(.*?)\"?\\s\\((\\d{4}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
-                substitution = "$1-$2-$4-$6-$8-$9";
+                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
+                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
                 header = new String[]{};
                 Parser parserCountries = new Parser(pattern, substitution, header, IMDBpath, choice, br);
                 break;
