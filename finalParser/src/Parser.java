@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,9 +11,13 @@ public class Parser
     private String IMDBpath;
     private String choice;
     private BufferedReader br;
-
+    private FileReader fr;
+    private String nextLine;
+    private String result;
+    private Matcher matcher;
+    private Pattern r;
     // Constructor
-    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br)
+    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br, FileReader fr)
     {
         this.pattern = pattern;
         this. substitution = substitution;
@@ -24,31 +25,35 @@ public class Parser
         this.IMDBpath = IMDBpath;
         this.choice = choice;
         this.br = br;
+        this.fr = fr;
     }
 
     // Method to actually parse the plaintext file into .CSV
     public void parse() throws IOException
     {
+        int count = 0;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
         {
-            while (br.readLine() != null)
+            r = Pattern.compile(pattern);
+            while ((nextLine = br.readLine()) != null)
             {
-                String nextLine = br.readLine();
+                matcher = r.matcher(nextLine);
 
-                Pattern r = Pattern.compile(pattern);
+                result = matcher.replaceAll(substitution);
 
-                Matcher matcher = r.matcher(nextLine);
-
-                String result = matcher.replaceAll(substitution);
-
-                writer.write(result);
-                writer.newLine();
+                if(result.length() != 0){
+                    count++;
+                    writer.write(result);
+                    writer.newLine();
+                }
             }
             writer.close();
+            System.out.println(count);
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
     }
+
 }

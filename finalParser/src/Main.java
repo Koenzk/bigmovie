@@ -43,8 +43,8 @@ public class Main
                 header = new String[]{};
                 break;
             case "actors":
-                pattern = "";
-                substitution = "";
+                pattern = "[\\n\\s*]*([$'#@\\w,\\s\\(\\)]+?)\\t([A-Z0-9\\,\\s]*)\\s(\\(([0-9]*)\\))\\s*(\\((.*)\\))\\s*(\\[(.*)\\])\\s*(\\<([0-9]*)\\>)";
+                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$8\",\"10\"";
                 header = new String[]{};
                 break;
             case "actresses":
@@ -68,8 +68,8 @@ public class Main
                 header = new String[]{};
                 break;
             case "running-times":
-                pattern = "(?:\")(.*)(?:\") \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d))(?:.*)";
-                substitution = "\\1, \\2, \\3, \\4";
+                pattern = "(?:\"|)([^\"\\n]*)\"? \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d)?(\\d)?(\\d))(?:.*)";
+                substitution = "\"$1\",\"$2\",\"$3\",\"$4\"";
                 header = new String[]{};
                 break;
             default:
@@ -81,7 +81,7 @@ public class Main
                 break;
         }
 
-        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br);
+        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br, fr);
         parser.parse();
     }
 
