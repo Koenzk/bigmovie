@@ -16,8 +16,8 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        ParserGUI pGui = new ParserGUI();
-        pGui.setVisible(true);
+        ParserGUI pGUI = new ParserGUI();
+        Controller controller = new Controller(pGUI);
     }
     
 }

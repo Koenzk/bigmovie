@@ -5,6 +5,14 @@
  */
 package bigdata;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.AbstractAction;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  *
  * @author HP
@@ -16,6 +24,30 @@ public class ParserGUI extends javax.swing.JFrame {
      */
     public ParserGUI() {
         initComponents();
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        jButton3.setEnabled(false);
+        jButton5.setEnabled(false);
+        DocumentListener pathListener = new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                warn();
+            }
+            public void insertUpdate(DocumentEvent e) {
+                warn();
+            }
+            public void removeUpdate(DocumentEvent e) {
+                warn();
+            }
+            
+            public void warn() {
+                if(isFilenameFile(jTextField1.getText()) && isFilenameDir(jTextField2.getText())) {
+                    jButton3.setEnabled(true);
+                } else {
+                    jButton3.setEnabled(false);
+                }
+            }          
+        };
+        jTextField1.getDocument().addDocumentListener(pathListener);
+        jTextField2.getDocument().addDocumentListener(pathListener);
     }
 
     /**
@@ -37,57 +69,68 @@ public class ParserGUI extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jProgressBar1 = new javax.swing.JProgressBar();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("CSVParser");
 
         jLabel1.setText("Input:");
 
-        jTextField1.setText("File input path");
         jTextField1.setToolTipText("");
 
         jButton1.setText("Browse");
 
         jLabel2.setText("Output:");
 
-        jTextField2.setText("File output path");
-
         jButton2.setText("Browse");
 
         jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(0, 0, 0));
         jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(0, 255, 0));
         jTextArea1.setRows(5);
-        jTextArea1.setText("Processing logs go here");
+        jTextArea1.setWrapStyleWord(true);
+        jTextArea1.setDragEnabled(true);
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton3.setText("Parse");
+
+        jButton4.setText("Close");
+
+        jButton5.setText("Cancel");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jScrollPane1)
+                            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1)
+                                    .addComponent(jTextField2))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(jButton2))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 339, Short.MAX_VALUE)
+                        .addComponent(jButton4)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addGap(171, 171, 171))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,12 +146,15 @@ public class ParserGUI extends javax.swing.JFrame {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton5)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
+                .addContainerGap())
         );
 
         pack();
@@ -149,11 +195,67 @@ public class ParserGUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    public boolean isFilenameFile(String file){
+        File f = new File(file);
+        return f.isFile();
+    }
+    
+    public boolean isFilenameDir(String file) {
+        File f = new File(file);
+        return f.isDirectory();
+    }
+    
+    public void setActions(AbstractAction input, AbstractAction output, AbstractAction parse, AbstractAction close) {
+        jButton1.setAction(input);
+        jButton1.setText("Browse"); 
+        
+        jButton2.setAction(output);
+        jButton2.setText("Browse");
+        
+        jButton3.setAction(parse);
+        jButton3.setText("Parse");
+        jButton3.setEnabled(false);
+        
+        jButton4.setAction(close);
+        jButton4.setText("Close");
+    }
+    
+    public void updateInputPath(String string) {
+        jTextField1.setText(string);
+    }
+    
+    public String getInputPath() {
+        return jTextField1.getText();
+    }
+    
+    public void updateOutputPath(String string) {
+        jTextField2.setText(string);
+    }
+    
+    public String getOutputPath() {
+        return jTextField2.getText();
+    }
+    
+    public void addLog(String string) {
+        jTextArea1.append(string + "\n");
+    }
+    
+    public void setProgressBar(int max) {
+        jProgressBar1.setMaximum(max);
+        jProgressBar1.setStringPainted(true);
+    }
+    
+    public void updateProgressBar(int value) {
+        jProgressBar1.setValue(value);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JProgressBar jProgressBar1;
