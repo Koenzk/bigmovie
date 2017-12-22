@@ -1,22 +1,36 @@
-import com.opencsv.CSVWriter;
-
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Parser {
+public class Parser
+{
+    // Class variables
+    private String pattern;
+    private String substitution;
+    private String[] header;
+    private String IMDBpath;
+    private String choice;
+    private BufferedReader br;
 
-    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br){
+    // Constructor
+    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br)
+    {
+        this.pattern = pattern;
+        this. substitution = substitution;
+        this.header = header;
+        this.IMDBpath = IMDBpath;
+        this.choice = choice;
+        this.br = br;
+    }
 
-        try (CSVWriter csvWriter = new CSVWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
+    // Method to actually parse the plaintext file into .CSV
+    public void parse() throws IOException
+    {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
         {
-            int count = 0; // TODO: Remove count, in de huidige situatie doorloopt hij alleen de eerste 150 regels van het plaintext bestand.
-
-            csvWriter.writeNext(header); // TODO: Nodig?
-
             while (br.readLine() != null)
             {
                 String nextLine = br.readLine();
@@ -27,23 +41,14 @@ public class Parser {
 
                 String result = matcher.replaceAll(substitution);
 
-                String[] line = result.split("-");
-
-                csvWriter.writeNext(line, true);
-
-                count++;
-
-                System.out.println(nextLine);
+                writer.write(result);
+                writer.newLine();
             }
-        } catch (IOException e) {
+            writer.close();
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
 }

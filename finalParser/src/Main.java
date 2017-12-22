@@ -3,14 +3,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Main {
-
-    public static void main(String[] args) throws IOException {
-
-        // Constants
-        String IMDBpath = "D:\\listfiles\\"; // TODO: !!
-
+public class Main
+{
+    // Main method
+    public static void main(String[] args) throws IOException
+    {
         // Variables
+        String IMDBpath = "D:\\listfiles\\";
         String pattern;
         String substitution;
         String[] header;
@@ -30,21 +29,18 @@ public class Main {
         {
             case "countries":
                 pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
-                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
+                substitution = "\"$1\",$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
                 header = new String[]{};
-                Parser parserCountries = new Parser(pattern, substitution, header, IMDBpath, choice, br);
                 break;
             case "movies":
                 pattern = "";
                 substitution = "";
                 header = new String[]{};
-                Parser parserMovies = new Parser(pattern, substitution, header, IMDBpath, choice, br);
                 break;
             case "series":
-                pattern = "\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{(.*?)\\}})?\\s*(.*)";
-                substitution = "$1-$2-$4-$6-$7";
+                pattern = "\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{(.*?)\\}\\})?\\s*(.*)";
+                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$7\"";
                 header = new String[]{};
-                Parser parserSeries = new Parser(pattern, substitution, header, IMDBpath, choice, br);
                 break;
             case "actors":
                 pattern = "";
@@ -84,6 +80,9 @@ public class Main {
                 System.exit(0);
                 break;
         }
+
+        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br);
+        parser.parse();
     }
 
 }
