@@ -20,7 +20,7 @@ public class Parser
     public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br, FileReader fr)
     {
         this.pattern = pattern;
-        this. substitution = substitution;
+        this.substitution = substitution;
         this.header = header;
         this.IMDBpath = IMDBpath;
         this.choice = choice;
@@ -31,11 +31,11 @@ public class Parser
     // Method to actually parse the plaintext file into .CSV
     public void parse() throws IOException
     {
-        int count = 0;
+        int count = 100;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
         {
             r = Pattern.compile(pattern);
-            while ((nextLine = br.readLine()) != null)
+            while ((nextLine = br.readLine()) != null && count<= 325)
             {
                 matcher = r.matcher(nextLine);
 
