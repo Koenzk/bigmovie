@@ -9,11 +9,11 @@ public class Main
     public static void main(String[] args) throws IOException
     {
         // Variables
-        String IMDBpath = "D:\\listfiles\\";
+        String IMDBpath = "/Users/MustiDarsh/Desktop/School/Informatica/My GitHub Repo\'s/bigmovie/Lists/";
         String pattern;
         String substitution;
         String[] header;
-
+        int linesToSkip = 0;
         System.out.println("Which list would you like to export to CSV?");
 
         // Scanner
@@ -28,49 +28,58 @@ public class Main
         switch (choice)
         {
             case "countries":
-                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{\\{(SUSPENDED)\\}\\})?\\s*(.*)";
+                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{{(SUSPENDED)\\}})?\\s*(.*)";
                 substitution = "\"$1\",$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
                 header = new String[]{};
+                linesToSkip = 14;
                 break;
             case "movies":
-                pattern = "";
-                substitution = "";
+                pattern = "\\s([^\"].*[^\"])\\s\\((.{4})\\)\\s(\\((.{1,2})\\))?\\s*(\\{{(.*?)\\}})?\\s*(\\d{4}|\\?{4})";
+                substitution = "\\1,\\2,\\4,\\6,\\7";
                 header = new String[]{};
+                linesToSkip = 15;
                 break;
             case "series":
-                pattern = "\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*[^\\}])\\})?(\\{(.*?)\\}\\})?\\s*(.*)";
-                substitution = "\"$1\",\"$2\",\"$4\",\"$6\",\"$7\"";
+                pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*?[^\\}])\\})?\\s*(\\{{(.*?)\\}})?\\s*(.{4,9})";
+                substitution = "\\1 \\2 \\4 \\6 \\7";
                 header = new String[]{};
+                linesToSkip = 15;
                 break;
             case "actors":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
-                substitution = "\"$1\",\"$3\",$6\",\"$9\",\"$12\",\"$15\",\"$18\"";
+                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
                 header = new String[]{};
+                linesToSkip = 239;
                 break;
             case "actresses":
-                pattern = "";
-                substitution = "";
+                pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
                 header = new String[]{};
+                linesToSkip = 241;
                 break;
             case "directors":
-                pattern = "";
-                substitution = "";
+                pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
                 header = new String[]{};
+                linesToSkip = 235;
                 break;
             case "producers":
-                pattern = "";
-                substitution = "";
+                pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
                 header = new String[]{};
+                linesToSkip = 219;
                 break;
             case "ratings":
-                pattern = "";
-                substitution = "";
+                pattern = "(.{20}) ([0-9]\\.[0-9])  (.+) (\\(.{2,}\\)?) ?(\\{(.+)\\}?)?";
+                substitution = "$2; $3; \\4; \\5";
                 header = new String[]{};
+                linesToSkip = 28;
                 break;
             case "running-times":
                 pattern = "(?:\"|)([^\"\\n]*)\"? \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d)?(\\d)?(\\d))(?:.*)";
-                substitution = "\"$1\",\"$2\",\"$3\",\"$4\"";
+                substitution = "\\1, \\2, \\3, \\4";
                 header = new String[]{};
+                linesToSkip = 14;
                 break;
             default:
                 pattern = "";
@@ -81,7 +90,7 @@ public class Main
                 break;
         }
 
-        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br, fr);
+        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br, fr, linesToSkip);
         parser.parse();
     }
 

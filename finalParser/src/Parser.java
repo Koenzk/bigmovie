@@ -16,8 +16,9 @@ public class Parser
     private String result;
     private Matcher matcher;
     private Pattern r;
+    private int linesToSkip;
     // Constructor
-    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br, FileReader fr)
+    public Parser(String pattern, String substitution, String[] header, String IMDBpath, String choice, BufferedReader br, FileReader fr, int linesToSkip)
     {
         this.pattern = pattern;
         this.substitution = substitution;
@@ -26,29 +27,31 @@ public class Parser
         this.choice = choice;
         this.br = br;
         this.fr = fr;
+        this.linesToSkip = linesToSkip;
     }
 
     // Method to actually parse the plaintext file into .CSV
     public void parse() throws IOException
     {
-        int count = 100;
+        int lineNumber = 0;
+        int lts = this.linesToSkip;
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
         {
             r = Pattern.compile(pattern);
-            while ((nextLine = br.readLine()) != null && count<= 325)
+            while ((nextLine = br.readLine()) != null)
             {
+                if (++lineNumber <= lts) continue;
+
                 matcher = r.matcher(nextLine);
 
                 result = matcher.replaceAll(substitution);
 
                 if(result.length() != 0){
-                    count++;
                     writer.write(result);
                     writer.newLine();
                 }
             }
             writer.close();
-            System.out.println(count);
         }
         catch (IOException e)
         {
