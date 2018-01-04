@@ -38,18 +38,21 @@ public class Parser
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(IMDBpath + "CSV/" + choice.toLowerCase() + ".csv")))
         {
             r = Pattern.compile(pattern);
-            while ((nextLine = br.readLine()) != null)
-            {
+            while ((nextLine = br.readLine()) != null) {
                 if (++lineNumber <= lts) continue;
 
-                matcher = r.matcher(nextLine);
+                //if (!nextLine.startsWith("\"")) {
+//                    System.out.println(nextLine);
+                    matcher = r.matcher(nextLine);
 
-                result = matcher.replaceAll(substitution);
+                    result = matcher.replaceAll(substitution);
+                    System.out.println(result);
+                    if (result.length() != 0) {
+                        writer.write(result);
+                        writer.newLine();
 
-                if(result.length() != 0){
-                    writer.write(result);
-                    writer.newLine();
-                }
+                    }
+                //} else continue;
             }
             writer.close();
         }

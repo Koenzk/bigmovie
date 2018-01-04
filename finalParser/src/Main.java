@@ -9,7 +9,7 @@ public class Main
     public static void main(String[] args) throws IOException
     {
         // Variables
-        String IMDBpath = "/Users/MustiDarsh/Desktop/School/Informatica/My GitHub Repo\'s/bigmovie/Lists/";
+        String IMDBpath = "D:\\listfiles\\";
         String pattern;
         String substitution;
         String[] header;
@@ -28,44 +28,44 @@ public class Main
         switch (choice)
         {
             case "countries":
-                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{{(SUSPENDED)\\}})?\\s*(.*)";
-                substitution = "\"$1\",$2\",\"$4\",\"$6\",\"$8\",\"$9\"";
+                pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{(SUSPENDED)\\})?\\s*(.*)";
+                substitution = "$1; $2; $6; $9";
                 header = new String[]{};
                 linesToSkip = 14;
                 break;
             case "movies":
-                pattern = "\\s([^\"].*[^\"])\\s\\((.{4})\\)\\s(\\((.{1,2})\\))?\\s*(\\{{(.*?)\\}})?\\s*(\\d{4}|\\?{4})";
-                substitution = "\\1,\\2,\\4,\\6,\\7";
+                pattern = "\\s?([^\"].*[^\"])\\s(?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\))\\s(\\((.{1,2})\\))?\\s*(\\{\\{(.*?)\\}\\})?\\s*(\\d{4}|\\?{4})";
+                substitution = "$1; $2; $8";
                 header = new String[]{};
-                linesToSkip = 15;
+                linesToSkip = 14;
                 break;
             case "series":
-                pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*?[^\\}])\\})?\\s*(\\{{(.*?)\\}})?\\s*(.{4,9})";
-                substitution = "\\1 \\2 \\4 \\6 \\7";
+                pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*?[^\\}])\\})?\\s*(\\{(.*?)\\})?\\s*(.{4,9})";
+                substitution = "$1; $2; $4; $7";
                 header = new String[]{};
                 linesToSkip = 15;
                 break;
             case "actors":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
-                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
+                substitution = "$1; $3; $6; $9; $12; $15; $18";
                 header = new String[]{};
                 linesToSkip = 239;
                 break;
             case "actresses":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
-                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
+                substitution = "$1; $3; $6; $9; $12; $15; $18";
                 header = new String[]{};
                 linesToSkip = 241;
                 break;
             case "directors":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
-                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
+                substitution = "$1; $3; $6; $9; $11; $15";
                 header = new String[]{};
                 linesToSkip = 235;
                 break;
             case "producers":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
-                substitution = "\\1 \\3 \\6 \\9 \\12 \\15 \\18";
+                substitution = "$1; $3; $6; $9; $11; $15";
                 header = new String[]{};
                 linesToSkip = 219;
                 break;
@@ -77,7 +77,7 @@ public class Main
                 break;
             case "running-times":
                 pattern = "(?:\"|)([^\"\\n]*)\"? \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d)?(\\d)?(\\d))(?:.*)";
-                substitution = "\\1, \\2, \\3, \\4";
+                substitution = "$1; $2; $3; $4";
                 header = new String[]{};
                 linesToSkip = 14;
                 break;
