@@ -39,6 +39,7 @@ public class Parser
     public void parse() throws IOException
     {
         int lineNumber = 0;
+        count = 0;
         int lts = this.linesToSkip;
 
         switch(option){
@@ -79,7 +80,10 @@ public class Parser
                         result = matcher.replaceAll(substitution);
                         System.out.println(result);
                         if (lineString.length() != 0) {
+                            count++;
                             writer.write(lineString.toString());
+                            pGui.addLog(result);
+                            pGui.updateProgressBar(count);
                             writer.newLine();
 
                         }
@@ -89,7 +93,7 @@ public class Parser
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    pGui.addLog(e.toString());
                 }
                 break;
             default:
@@ -106,8 +110,11 @@ public class Parser
                         result = matcher.replaceAll(substitution);
                         System.out.println(result);
                         if (result.length() != 0) {
+                            count++;
                             writer.write(result);
                             writer.newLine();
+                            pGui.addLog(result);
+                            pGui.updateProgressBar(count);
 
                         }
                         //} else continue;
@@ -116,7 +123,7 @@ public class Parser
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    pGui.addLog(e.toString());
                 }
     }
     }

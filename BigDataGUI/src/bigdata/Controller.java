@@ -6,15 +6,21 @@
 package bigdata;
 
 import java.awt.event.ActionEvent;
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -81,10 +87,12 @@ public class Controller {
             File f = new File(pGui.getInputPath());
             FileReader fr;
             BufferedReader br;
+            int linesToSkip = 0;
             String pattern;
             String[] header;
             String substitution;
             String result;
+            String option = "test";
             String outpath;
             
             try {
@@ -92,24 +100,85 @@ public class Controller {
                 br = new BufferedReader(fr);
                 //Path path = Paths.get(pGui.getInputPath());
                 //Stream<String> stream = Files.lines(path);
-                pGui.setProgressBar(1000);
             } catch (IOException err) {
                 pGui.addLog(err.toString());
                 return;
             }
             
             switch (f.getName()) {
-                case "movies.list": {
-                    pattern = "";
-                    substitution = "";
+                case "countries.list": {
+                    pattern = "\"?(.*?)\"?\\s\\((.{4,7}|\\?\\?\\?\\?|\\d{4}\\/.*)\\)\\s*(\\((.*)\\))?\\s*(\\{([^\\{}]*)\\})?\\s(\\{(SUSPENDED)\\})?\\s*(.*)";
+                    substitution = "$1; $2; $6; $9";
                     header = new String[]{};
+                    linesToSkip = 14;
+                    result = "\\countries.csv";
+                    break;
+                }
+                case "movies.list": {
+                    pattern = "\\s?([^\"].*[^\"])\\s(?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\))\\s(\\((.{1,2})\\))?\\s*(\\{\\{(.*?)\\}\\})?\\s*(\\d{4}|\\?{4})";
+                    substitution = "$1; $2; $8";
+                    header = new String[]{};
+                    linesToSkip = 14;
                     result = "\\movies.csv";
+                    break;
+                }
+                case "series.list": {
+                    pattern = "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*?[^\\}])\\})?\\s*(\\{(.*?)\\})?\\s*(.{4,9})";
+                    substitution = "$1; $2; $4; $7";
+                    header = new String[]{};
+                    linesToSkip = 15;
+                    result = "\\series.csv";
+                    break;
+                }
+                case "actors.list": {
+                    pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                    substitution = "$1; $3; $6; $9; $12; $15; $18";
+                    header = new String[]{};
+                    linesToSkip = 239;
+                    option = "tabbed";
+                    result = "\\actors.csv";
+                    break;
+                }
+                case "actresses.list": {
+                    pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                    substitution = "$1; $3; $6; $9; $12; $15; $18";
+                    header = new String[]{};
+                    linesToSkip = 241;
+                    option = "tabbed";
+                    result = "\\actresses.csv";
+                    break;
+                }
+                case "directors.list": {
+                    pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                    substitution = "$1; $3; $6; $9; $11; $15";
+                    header = new String[]{};
+                    linesToSkip = 235;
+                    option = "tabbed";
+                    result = "\\directors.csv";
+                    break;
+                }
+                case "producers.list": {
+                    pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
+                    substitution = "$1; $3; $6; $9; $11; $15";
+                    header = new String[]{};
+                    linesToSkip = 219;
+                    option = "tabbed";
+                    result = "\\producers.csv";
+                    break;
+                }
+                case "ratings.list": {
+                    pattern = "(.{20}) ([0-9]\\.[0-9])  (.+) (?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\)) ?(\\{(.+)\\}?)?";
+                    substitution = "$2; $3; $4; $7";
+                    header = new String[]{};
+                    linesToSkip = 28;
+                    result = "\\ratings.csv";
                     break;
                 }
                 case "running-times.list": {
                     pattern = "(?:\")(.*)(?:\") \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d))(?:.*)";
-                    substitution = "\\1, \\2, \\3, \\4";
+                    substitution = "$1, $2, $3, $4";
                     header = new String[]{};
+                    linesToSkip = 14;
                     result = "\\running-times.csv";
                     break;
                 }
@@ -119,11 +188,13 @@ public class Controller {
                     header = new String[]{};
                     pGui.addLog("List not found.");
                     result = null;
+                    option = null;
+                    linesToSkip = 0;
                     break;
                 }
             }
             outpath = pGui.getOutputPath() + result;
-            new Parser(pattern, substitution, header, outpath, br, fr).execute();
+            new Parser(pattern, substitution, header, outpath, br, fr, linesToSkip, option).execute();
         }
     }
     
@@ -143,56 +214,144 @@ public class Controller {
         private Pattern r;
         private int count;
         private String current;
+        private int linesToSkip;
+        private String option;
         
         
-        public Parser(String pattern, String substitution, String[] header, String outpath, BufferedReader br, FileReader fr) {
+        public Parser(String pattern, String substitution, String[] header, String outpath, BufferedReader br, FileReader fr, int linesToSkip, String option) {
             this.pattern = pattern;
-            this. substitution = substitution;
+            this.substitution = substitution;
             this.header = header;
             this.outpath = outpath;
             this.br = br;
             this.fr = fr;
+            this.linesToSkip = linesToSkip;
+            this.option = option;
             count = 0;
             current = "";
         }
         
-        protected void process() {
-            pGui.updateProgressBar(count); //werkt niet?
-        }
+        public int countLines(String filename) throws IOException {
+            InputStream is = new BufferedInputStream(new FileInputStream(filename));
+            try {
+                byte[] c = new byte[1024];
+                int cnt = 0;
+                int readChars = 0;
+                boolean empty = true;
+                while ((readChars = is.read(c)) != -1) {
+                    empty = false;
+                    for (int i = 0; i < readChars; ++i) {
+                        if (c[i] == '\n') {
+                            ++cnt;
+                        }
+                    }
+                }
+                return (cnt == 0 && !empty) ? 1 : cnt;
+            } finally {
+                is.close();
+            }
+        } 
         
         @Override
         protected Void doInBackground() throws IOException{
-            //parser logic
-            count = 0;
-            pGui.updateProgressBar(count); //update progress bar
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath)))
-            {
-                r = Pattern.compile(pattern);
-                while ((nextLine = br.readLine()) != null)
+        int lineNumber = 0;
+        int lts = this.linesToSkip;
+        pGui.setProgressBar(countLines(pGui.getInputPath()) - lts); //set progress bar length to amount of lines in file minus lts
+
+        switch(option){
+
+            case "tabbed": {
+                String prevName = "";
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath)))
                 {
-                    matcher = r.matcher(nextLine);
+                    r = Pattern.compile(pattern);
+                    while ((nextLine = br.readLine()) != null) {
+                        if (++lineNumber <= lts) continue;
 
-                    result = matcher.replaceAll(substitution);
+                        matcher = r.matcher(nextLine);
+                        List<String> rows = new ArrayList<>();
 
-                    if(result.length() != 0){
-                        count++;
-                        writer.write(result);
-                        pGui.addLog(result); //laat lijn in kwestie in de log zien
-                        writer.newLine();
+                        if (matcher.find()) {
+                            if (Objects.equals("", matcher.group(1))) {
+                                rows.add(prevName);
+                                rows.add("\t" + matcher.group(3));
+                            } else {
+                                rows.add(matcher.group(1));
+                                rows.add("\t" + matcher.group(3));
+                                prevName = matcher.group(1);
+                            }
+                        }
+                        //if (!nextLine.startsWith("\"")) {
+//                    System.out.println(nextLine);
+                        StringBuilder lineString = new StringBuilder();
+                        for (String row : rows) {
+                            if (row != null) {
+                                row = row.trim();
+                            }
+//                System.out.println(lineString);
+                            assert row != null;
+                            lineString.append(row.trim()).append(";\t");
+                        }
+
+                        result = matcher.replaceAll(substitution);
+                        System.out.println(result);
+                        if (lineString.length() != 0) {
+                            count++; //update current line count
+                            writer.write(lineString.toString());
+                            pGui.addLog(result); //prints converted data to log
+                            pGui.updateProgressBar(count); //update progress bar
+                            writer.newLine();
+
+                        }
+                        //} else continue;
                     }
+                    writer.close();
                 }
-                writer.close();
-                System.out.println(count);
+                catch (IOException e)
+                {
+                    pGui.addLog(e.toString());
+                }
+                break;
             }
-            catch (IOException e)
-            {
-                pGui.addLog(e.toString());
+            default: {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath)))
+                {
+                    r = Pattern.compile(pattern);
+                    while ((nextLine = br.readLine()) != null) {
+                        if (++lineNumber <= lts) continue;
+
+                        //if (!nextLine.startsWith("\"")) {
+//                    System.out.println(nextLine);
+                        matcher = r.matcher(nextLine);
+
+                        result = matcher.replaceAll(substitution);
+                        System.out.println(result);
+                        if (result.length() != 0) {
+                            count++;
+                            writer.write(result);
+                            writer.newLine();
+                            pGui.addLog(result);
+                            pGui.updateProgressBar(count);
+
+                        }
+                        //} else continue;
+                    }
+                    writer.close();
+                }
+                catch (IOException e)
+                {
+                    pGui.addLog(e.toString());
+                } 
+                break;
+            }
+                
             }
                 return null;
             }
         
         @Override
         protected void done() {
+            pGui.addLog("Conversion finished!");
             pGui.addLog("--------------------------------------");
         }
     }
