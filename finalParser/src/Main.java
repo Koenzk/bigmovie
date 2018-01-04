@@ -70,8 +70,8 @@ public class Main
                 linesToSkip = 219;
                 break;
             case "ratings":
-                pattern = "(.{20}) ([0-9]\\.[0-9])  (.+) (\\(.{2,}\\)?) ?(\\{(.+)\\}?)?";
-                substitution = "$2; $3; \\4; \\5";
+                pattern = "(.{20}) ([0-9]\\.[0-9])  (.+) (?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\)) ?(\\{(.+)\\}?)?";
+                substitution = "$2; $3; $4; $7";
                 header = new String[]{};
                 linesToSkip = 28;
                 break;
