@@ -1,0 +1,8 @@
+Regular Expression:
+(.*?)(\t{1,3})(.+?(?=\())(\s+)?(\((.+?(?=\)))\))(\s)(\{(.+)\})?( +)?(\((\w{1})\))?( +)?(\((.*)\))?( +)?(\[(.+)\])?( +)?(\<(.*)\>)?
+
+Substitution:
+To be chosen using the link below. 
+
+Link:
+https://regex101.com/r/Ktqh82/18
