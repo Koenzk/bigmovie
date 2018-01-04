@@ -1,12 +1,12 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Moustafa Elhagaly on 02/01/2018
+ * Created by Moustafa Elhagaly on 22/12/2017
  */
 public class LineSeperationByTabs {
     public static void main(String[] args) throws IOException {
@@ -106,48 +106,50 @@ public class LineSeperationByTabs {
                 + "'Cherry, Sahel		The Emancipation of Anemone (????)  [Chorus]\n\n"
                 + "'Chincheta', Eloy	°Ja me maaten...! (2000)  [Gitano 1]  <20>\n";
 
-        final String subst = "$1\n";
-        final String subst2 = "\t$3";
-
         final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-        String nextLine;
 
+        String currentLine;
+        String prevName = "";
+        BufferedWriter fw = new BufferedWriter(new FileWriter("actors.csv"));
         BufferedReader br = new BufferedReader(new StringReader(string));
-        while ((nextLine = br.readLine()) != null)
+
+        int lineNumber = 0;
+        int linesToSkip = 0;
+        while ((currentLine = br.readLine()) != null)
         {
-            //TODO: Fix attachment actors to nested (tabbed) movies
+            if (++lineNumber <= linesToSkip) continue;
 
-            final Matcher matcher = pattern.matcher(nextLine);
-            String resultActor;
-            String resultActorMovies;
-            String resultActorMovie;
+            final Matcher matcher = pattern.matcher(currentLine);
+            List<String> rows = new ArrayList<>();
 
-            if(!nextLine.isEmpty() && !Objects.equals(nextLine, "\n") && !nextLine.startsWith("\t")){
-                resultActor = matcher.replaceAll(subst);
-                resultActorMovie = matcher.replaceAll(subst2);
-                System.out.println(resultActor.trim());
-                System.out.println(resultActorMovie);
-            }
-            else if(!nextLine.isEmpty() && !Objects.equals(nextLine, "\n")){
-                resultActorMovies = matcher.replaceAll(subst2);
-                if(!resultActorMovies.isEmpty() && !Objects.equals(resultActorMovies, "\n")) {
-                    System.out.println(resultActorMovies);
+            if (matcher.find()) {
+                if (Objects.equals("", matcher.group(1))) {
+                    rows.add(prevName);
+                    rows.add("\t" + matcher.group(3));
+                } else {
+                    rows.add(matcher.group(1));
+                    rows.add("\t" + matcher.group(3));
+                    prevName = matcher.group(1);
                 }
             }
+
+            StringBuilder lineString = new StringBuilder();
+            for (String row : rows) {
+                if (row != null) {
+                    row = row.trim();
+                }
+//                System.out.println(lineString);
+                assert row != null;
+                lineString.append(row.trim()).append(";\t");
+            }
+            if (!lineString.toString().isEmpty()) {
+                fw.write(lineString.toString() + "\n");
+
+                System.out.println(lineString.toString().trim());
+            }
+//            fw.write(lineString.toString().isEmpty() + "\n", 0, lineString.toString().length());
+
         }
-
-        /*
-            while(matcher.find()) {
-                if(!matcher.group(1).isEmpty() && !matcher.group(1).startsWith("\t")){
-                    String actor = matcher.group(1).trim();
-                    System.out.println(matcher.group(1) + " has movie: " + matcher.group(3));
-                    matcher.find();
-                    if(matcher.group(1).startsWith("\t")){
-                        System.out.println(actor + " has movie: " + matcher.group(3));
-                    }
-                }
-            }
-         */
-
+        fw.close();
     }
 }
