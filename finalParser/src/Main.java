@@ -14,6 +14,7 @@ public class Main
         String substitution;
         String[] header;
         int linesToSkip = 0;
+        String option = "";
         System.out.println("Which list would you like to export to CSV?");
 
         // Scanner
@@ -50,24 +51,28 @@ public class Main
                 substitution = "$1; $3; $6; $9; $12; $15; $18";
                 header = new String[]{};
                 linesToSkip = 239;
+                option = "tabbed";
                 break;
             case "actresses":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
                 substitution = "$1; $3; $6; $9; $12; $15; $18";
                 header = new String[]{};
                 linesToSkip = 241;
+                option = "tabbed";
                 break;
             case "directors":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
                 substitution = "$1; $3; $6; $9; $11; $15";
                 header = new String[]{};
                 linesToSkip = 235;
+                option = "tabbed";
                 break;
             case "producers":
                 pattern = "(.*?)(\\t{1,3})(.+?(?=\\())(\\s+)?(\\((.+?(?=\\)))\\))(\\s)(\\{(.+)\\})?( +)?(\\((\\w{1})\\))?( +)?(\\((.*)\\))?( +)?(\\[(.+)\\])?( +)?(\\<(.*)\\>)?";
                 substitution = "$1; $3; $6; $9; $11; $15";
                 header = new String[]{};
                 linesToSkip = 219;
+                option = "tabbed";
                 break;
             case "ratings":
                 pattern = "(.{20}) ([0-9]\\.[0-9])  (.+) (?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\)) ?(\\{(.+)\\}?)?";
@@ -90,7 +95,7 @@ public class Main
                 break;
         }
 
-        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br, fr, linesToSkip);
+        Parser parser = new Parser(pattern, substitution, header, IMDBpath, choice, br, fr, linesToSkip, option);
         parser.parse();
     }
 
