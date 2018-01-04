@@ -1,5 +1,7 @@
-Regular Expression:
-\s*(.{10})\s*(\d{1,8})\s*(.{3})\s*(\"(.*?)\")?(.*?)\s*(\((.*?)\))|\s*\{(.*?)\}
+Ratings
 
-Substitution:
- 
+Regular expression:  "(.{20}) ([0-9]\\.[0-9])  (.+) (\\([0-9]{4}\\)) (\\{.+\\})";
+
+Substitution: "\\2 \\3 \\4 \\5";
+
+Link: https://regex101.com/r/vMu3Bj/2
