@@ -94,6 +94,8 @@ public class Controller {
             String result;
             String option = "test";
             String outpath;
+            int[] substitutions;
+
             
             try {
                 fr = new FileReader(f);
@@ -111,6 +113,7 @@ public class Controller {
                     substitution = "$1; $2; $6; $9";
                     header = new String[]{};
                     linesToSkip = 14;
+                    substitutions = null;
                     result = "\\countries.csv";
                     break;
                 }
@@ -119,6 +122,7 @@ public class Controller {
                     substitution = "$1; $2; $8";
                     header = new String[]{};
                     linesToSkip = 14;
+                    substitutions = null;
                     result = "\\movies.csv";
                     break;
                 }
@@ -127,6 +131,7 @@ public class Controller {
                     substitution = "$1; $2; $4; $7";
                     header = new String[]{};
                     linesToSkip = 15;
+                    substitutions = null;
                     result = "\\series.csv";
                     break;
                 }
@@ -136,6 +141,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 239;
                     option = "tabbed";
+                    substitutions = new int[]{3, 6, 9, 12, 15, 18};
                     result = "\\actors.csv";
                     break;
                 }
@@ -145,6 +151,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 241;
                     option = "tabbed";
+                    substitutions = new int[]{3, 6, 9, 12, 15, 18};
                     result = "\\actresses.csv";
                     break;
                 }
@@ -154,6 +161,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 235;
                     option = "tabbed";
+                    substitutions = new int[]{3, 6, 9, 11, 15};
                     result = "\\directors.csv";
                     break;
                 }
@@ -163,6 +171,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 219;
                     option = "tabbed";
+                    substitutions = new int[]{3, 6, 9, 11, 15};
                     result = "\\producers.csv";
                     break;
                 }
@@ -171,6 +180,7 @@ public class Controller {
                     substitution = "$2; $3; $4; $7";
                     header = new String[]{};
                     linesToSkip = 28;
+                    substitutions = null;
                     result = "\\ratings.csv";
                     break;
                 }
@@ -179,6 +189,7 @@ public class Controller {
                     substitution = "$1, $2, $3, $4";
                     header = new String[]{};
                     linesToSkip = 14;
+                    substitutions = null;
                     result = "\\running-times.csv";
                     break;
                 }
@@ -189,12 +200,13 @@ public class Controller {
                     pGui.addLog("List not found.");
                     result = null;
                     option = null;
+                    substitutions = null;
                     linesToSkip = 0;
                     break;
                 }
             }
             outpath = pGui.getOutputPath() + result;
-            new Parser(pattern, substitution, header, outpath, br, fr, linesToSkip, option).execute();
+            new Parser(pattern, substitution, header, outpath, br, fr, linesToSkip, option, substitutions).execute();
         }
     }
     
@@ -216,9 +228,9 @@ public class Controller {
         private String current;
         private int linesToSkip;
         private String option;
-        
-        
-        public Parser(String pattern, String substitution, String[] header, String outpath, BufferedReader br, FileReader fr, int linesToSkip, String option) {
+        private int[] subs;
+
+        public Parser(String pattern, String substitution, String[] header, String outpath, BufferedReader br, FileReader fr, int linesToSkip, String option, int[] subs) {
             this.pattern = pattern;
             this.substitution = substitution;
             this.header = header;
@@ -229,6 +241,7 @@ public class Controller {
             this.option = option;
             count = 0;
             current = "";
+            this.subs = subs;
         }
         
         public int countLines(String filename) throws IOException {
@@ -274,10 +287,14 @@ public class Controller {
                         if (matcher.find()) {
                             if (Objects.equals("", matcher.group(1))) {
                                 rows.add(prevName);
-                                rows.add("\t" + matcher.group(3));
+                                for (int i : subs) {
+                                    rows.add("\t" + matcher.group(i));
+                                }
                             } else {
                                 rows.add(matcher.group(1));
-                                rows.add("\t" + matcher.group(3));
+                                for (int i : subs) {
+                                    rows.add("\t" + matcher.group(i));
+                                }
                                 prevName = matcher.group(1);
                             }
                         }
