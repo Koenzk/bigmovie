@@ -70,10 +70,10 @@ public class Controller {
             JFileChooser output = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
             output.setDialogTitle("Choose a directory to save your file in:");
             output.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            
+//            output.setAcceptAllFileFilterUsed(false);
             int result = output.showSaveDialog(null);
             if (result == JFileChooser.APPROVE_OPTION) {
-                pGui.updateOutputPath(output.getSelectedFile().getPath());
+                pGui.updateOutputPath(output.getCurrentDirectory().getPath() + "/");
             }
         }
     }
@@ -114,7 +114,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 14;
                     substitutions = null;
-                    result = "\\countries.csv";
+                    result = "countries.csv";
                     break;
                 }
                 case "movies.list": {
@@ -123,7 +123,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 14;
                     substitutions = null;
-                    result = "\\movies.csv";
+                    result = "movies.csv";
                     break;
                 }
                 case "series.list": {
@@ -132,7 +132,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 15;
                     substitutions = null;
-                    result = "\\series.csv";
+                    result = "series.csv";
                     break;
                 }
                 case "actors.list": {
@@ -142,7 +142,7 @@ public class Controller {
                     linesToSkip = 239;
                     option = "tabbed";
                     substitutions = new int[]{3, 6, 9, 12, 15, 18};
-                    result = "\\actors.csv";
+                    result = "actors.csv";
                     break;
                 }
                 case "actresses.list": {
@@ -152,7 +152,7 @@ public class Controller {
                     linesToSkip = 241;
                     option = "tabbed";
                     substitutions = new int[]{3, 6, 9, 12, 15, 18};
-                    result = "\\actresses.csv";
+                    result = "actresses.csv";
                     break;
                 }
                 case "directors.list": {
@@ -162,7 +162,7 @@ public class Controller {
                     linesToSkip = 235;
                     option = "tabbed";
                     substitutions = new int[]{3, 6, 9, 11, 15};
-                    result = "\\directors.csv";
+                    result = "directors.csv";
                     break;
                 }
                 case "producers.list": {
@@ -172,7 +172,7 @@ public class Controller {
                     linesToSkip = 219;
                     option = "tabbed";
                     substitutions = new int[]{3, 6, 9, 11, 15};
-                    result = "\\producers.csv";
+                    result = "producers.csv";
                     break;
                 }
                 case "ratings.list": {
@@ -181,7 +181,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 28;
                     substitutions = null;
-                    result = "\\ratings.csv";
+                    result = "ratings.csv";
                     break;
                 }
                 case "running-times.list": {
@@ -190,7 +190,7 @@ public class Controller {
                     header = new String[]{};
                     linesToSkip = 14;
                     substitutions = null;
-                    result = "\\running-times.csv";
+                    result = "running-times.csv";
                     break;
                 }
                 default: {
