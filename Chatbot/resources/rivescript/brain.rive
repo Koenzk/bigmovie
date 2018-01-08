@@ -1,0 +1,74 @@
+// brain.rive
+
++ hello
+- Hi there!
+
++ how are you
+- I'm fine.
+- Splendid!
+- Couldn't be better!
+
++ /start
+- I'm The_Best_IMDB_bot! Ask me questions about your favorite movies. Type /help for some example questions. Type /examples for explanation on RiveScript Chatbot features.
+
++ /restart
+- <call>bot restart</call>
+
++ /help
+- You can ask me questions like:\n
+^ Which movies did Liv Tyler act in?\n
+^ What is the date?\n
+^ show files\n
+^ What are common video formats?
+
++ oh oh
+- Den Haag, mooie stad achter de duinen! De schilderswijk, langepoten en het plein.
+
++ oh oh den haag
+- Ik zou met niemand willen ruilen Meteen gaan huilen, als ik geen Hagenees zou zijn
+
++ /examples
+- Here some examples on how to program this bot using the RiveScript file: (these commands should be between call tags)\n
+^ system [terminal command] -> execute terminal command on bot-machine
+^ jdbc [server] [port] [database] [user] [password] [query] -> execute a SQL query at a database
+^ system resources/R/[Rscript.R] 2&> /dev/null -> execute a R script on the bot-machine
+^ send photo [location] [description] -> send a photo with a description
+
++ *
+- Not sure I got that. Type /help for some example questions.
+
+// VOORBEEL: terminal commands [1]
++ show files
+- <call>system ls -l</call>
+
+// VOORBEEL: terminal commands [2]
++ what is the date?
+- The date is: <call>system date</call>
+
+// VOORBEELD: SQL query
++ which movies did _ _ *
+- <call>jdbc localhost 3306 imdb imdb imdb select title from cast_info, name, title, kind_type where person_id = name.id and title.id = movie_id and kind_id = kind_type.id and name like '<star2>, <star>' and kind = 'movie'</call>
+
+// VOORBEELD: R script aanroepen
++ [*] video formats [*]
+- There it is! 
+^ <call>system resources/R/video-format.R 2&> /dev/null</call>
+^ <call>send photo /tmp/video-format.jpg The graph produced by R</call>
+
+// Substitutions
+! sub i'm     = i am
+! sub i'd     = i would
+! sub i've    = i have
+! sub i'll    = i will
+! sub don't   = do not
+! sub isn't   = is not
+! sub you'd   = you would
+! sub you're  = you are
+! sub you've  = you have
+! sub you'll  = you will
+! sub what's  = what is
+! sub whats   = what is
+! sub what're = what are
+! sub what've = what have
+! sub what'll = what will
+! sub who's   = who is
