@@ -15,10 +15,11 @@ public class Chatbot extends TelegramLongPollingBot
     {
         super();
         bot.setSubroutine("system", new SystemSubroutine());
-        bot.setSubroutine("bot", new BotSubroutine(this));
+        bot.setSubroutine("bot", new BotSubroutine());
         bot.setSubroutine("jdbc", new DatabaseSubroutine());
         bot.setSubroutine("send", new SendSubroutine(this));
-        bot.loadDirectory("resources/rivescript");
+        bot.loadDirectory("/home/koenzk/chatbot/rivescript");
+//        bot.loadDirectory("resources/rivescript");
         bot.sortReplies();
     }
 
@@ -62,10 +63,5 @@ public class Chatbot extends TelegramLongPollingBot
     {
         // Return bot token from BotFather
         return "365483835:AAHCHztOCwj8RcU0aDVXQb5RcGdp_aPAlSU";
-    }
-
-    public void reloadRiveScript()
-    {
-        bot.loadDirectory("resources/rivescript");
     }
 }

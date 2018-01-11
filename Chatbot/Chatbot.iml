@@ -46,7 +46,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/mysql-connector-java-5.1.45-bin.jar!/" />
+          <root url="jar://$MODULE_DIR$/libs/postgresql-42.1.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
