@@ -8,13 +8,17 @@
 - Splendid!
 - Couldn't be better!
 
-+ /start
++ kut bot
+- Het spijt me!
+
++ [*] start [*]
 - I'm The_Best_IMDB_bot! Ask me questions about your favorite movies. Type /help for some example questions. Type /examples for explanation on RiveScript Chatbot features.
 
-+ /restart
-- <call>bot restart</call>
++ [*] restart [*]
+- Restarting now, please wait!
+^ <call>bot restart</call>
 
-+ /help
++ [*] help [*]
 - You can ask me questions like:\n
 ^ Which movies did Liv Tyler act in?\n
 ^ What is the date?\n
@@ -27,7 +31,7 @@
 + oh oh den haag
 - Ik zou met niemand willen ruilen Meteen gaan huilen, als ik geen Hagenees zou zijn
 
-+ /examples
++ [*] examples [*]
 - Here some examples on how to program this bot using the RiveScript file: (these commands should be between call tags)\n
 ^ system [terminal command] -> execute terminal command on bot-machine
 ^ jdbc [server] [port] [database] [user] [password] [query] -> execute a SQL query at a database
