@@ -1,4 +1,5 @@
 --Wat is de kortste film met een waardering van 8.5 of hoger?
+--Getest en werkt
 	SELECT primary_title
 	FROM titles
 	WHERE title_type = 'movie' AND tconst IN (
@@ -33,7 +34,7 @@
 	WHERE nconst IN (
 		SELECT nconst 
 		FROM titles_principals
-		WHERE
+		WHERE 
 	);
 	
 --Welke schrijvers spelen in hun eigen films en welke films zijn dat? 
@@ -46,6 +47,17 @@
 	);
 
 --Welke acteur of actrice speelt het meest in de slechtst gewaardeerde films?
+	SELECT primary_name 
+	FROM names 
+	WHERE nconst IN (
+        SELECT nconst
+        FROM titles
+        WHERE title_type = 'movie' AND tconst IN (
+            SELECT tconst
+            FROM ratings 
+            WHERE 
+		)
+	);
 
 --Welke films van Johnny Depp hebben een 7.5 of hoger?
 	--Met code
@@ -89,6 +101,7 @@
 		WHERE nconst LIKE '%nm0908094%'
 	);
 	--Met naam
+	--Er zijn 48 Paul Walkers, door het geboortejaar wordt de goede gepakt.
 	SELECT COUNT(tconst)
 	FROM titles
 	WHERE title_type = 'movie' AND (primary_title LIKE '%Fast%' OR primary_title LIKE '%Furious%') AND tconst IN (
@@ -97,6 +110,22 @@
 		WHERE nconst IN (
 			SELECT nconst
 			FROM names
-			WHERE primary_name = 'Paul Walker'
+			WHERE primary_name = 'Paul Walker' AND birth_year = '1973' 
 		)
+	);
+	
+--Welke film heeft de hoogste score met de minste stemmen?
+--Getest en werkt
+	SELECT primary_title 
+	FROM titles
+	WHERE tconst IN (
+		SELECT tconst
+		FROM ratings
+		WHERE tconst IN (
+			SELECT tconst
+			FROM titles
+			WHERE title_type = 'movie'
+			)
+		ORDER BY num_votes ASC, average_rating DESC
+		LIMIT 1
 	);
