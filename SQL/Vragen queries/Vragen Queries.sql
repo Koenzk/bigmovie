@@ -116,19 +116,17 @@
 	
 --8. Welke film heeft de hoogste score met de minste stemmen?
 --Getest en werkt
-	SELECT primary_title 
-	FROM titles
-	WHERE tconst IN (
-		SELECT tconst
-		FROM ratings
-		WHERE tconst IN (
-			SELECT tconst
-			FROM titles
-			WHERE title_type = 'movie'
-			)
-		ORDER BY num_votes ASC, average_rating DESC
-		LIMIT 1
-	);
+SELECT primary_title
+FROM titles
+WHERE title_type = 'movie' AND
+tconst IN (
+    SELECT tconst
+    FROM ratings
+    WHERE (average_rating * num_votes) IN (
+        SELECT max(average_rating * num_votes)
+        FROM ratings
+    )
+)
 	
 --9. Maak een kaart (b.v. google maps / openstreetview) met landen waar een film speelt. Zodat op de kaart te zien is waar de films spelen. 
 
