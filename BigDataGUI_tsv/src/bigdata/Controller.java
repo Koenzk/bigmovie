@@ -105,9 +105,19 @@ public class Controller {
                     substitution = "$6, $8, $10, $12";
                     header = new String[]{};
                     linesToSkip = 1;
-                    option = "tabbed";
+                    option = "name_basics";
                     substitutions = new int[]{6, 8, 10, 12};
                     result = "name.basics.csv";
+                    break;
+                }
+                case "title.principals.tsv": {
+                    pattern = "(tt\\d{7})(\\t)(.*)";
+                    substitution = "$3,";
+                    header = new String[]{};
+                    linesToSkip = 1;
+                    option = "title_principals";
+                    substitutions = new int[]{3};
+                    result = "title.principals.csv";
                     break;
                 }
                 default: {
@@ -184,7 +194,7 @@ public class Controller {
             int lts = this.linesToSkip;
             pGui.setProgressBar(countLines(pGui.getInputPath()) - lts); //set progress bar length to amount of lines in file minus lts
             switch (option) {
-                case "tabbed": {
+                case "name_basics": {
                     String prevName = "";
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath))) {
                         r = Pattern.compile(pattern);
@@ -218,6 +228,47 @@ public class Controller {
                                 }
                             }
 
+                        }
+                        writer.flush();
+                        writer.close();
+                        br.close();
+                        System.gc();
+                    } catch (IOException e) {
+                        pGui.addLog(e.toString());
+                    }
+                    break;
+                }
+                // /Users/MustiDarsh/Downloads/title.principals.tsv
+                case "title_principals": {
+                    String prevName = "";
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath))) {
+                        r = Pattern.compile(pattern);
+                        while (br.hasNextLine()) {
+                            nextLine = br.nextLine();
+                            if (++lineNumber <= lts) continue;
+
+                            matcher = r.matcher(nextLine);
+                            StringBuilder txt = new StringBuilder();
+
+                            if (matcher.find()) {
+                                prevName = matcher.group(1);
+                                for (String x : matcher.group(3).split(",")) {
+                                    txt.append(prevName).append(";").append(x).append("\n");
+                                }
+                                count++;
+                                if (txt.toString().trim().length() != 0) {
+                                    writer.write(txt.toString().trim());
+                                    writer.newLine();
+                                }
+
+                                if (lineNumber % 5000 == 0) {
+                                    if (txt.toString().trim().length() != 0) {
+                                        pGui.addLog(txt.toString().trim()); //prints converted data to log
+                                    }
+                                    pGui.updateProgressBar(count); //update progress bar
+                                    System.gc();
+                                }
+                            }
                         }
                         writer.flush();
                         writer.close();
