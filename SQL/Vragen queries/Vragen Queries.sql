@@ -146,14 +146,15 @@
 	
 --9. Geef het aantal films dat in een land gemaakt is weer in de tijd. Dwz maak een grafiek waarin op de x-as het jaar staat en op de y-as het aantal gemaakte films
 --Getest en werkt	
-	SELECT count(original_title), start_year 
+	SELECT count(original_title), start_year AS syear
 	FROM titles
 	WHERE start_year <= 2018 AND original_title IN (
 		SELECT title
 		FROM akas
 		WHERE types IS NULL AND is_original_title = false AND region = '(voer hier regio-code in)'
 	)
-	GROUP BY start_year
+	GROUP BY syear
+	ORDER BY syear ASC
 	
 	
 	
