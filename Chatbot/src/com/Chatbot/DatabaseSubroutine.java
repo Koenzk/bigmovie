@@ -1,9 +1,9 @@
 package com.Chatbot;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 import com.rivescript.macro.Subroutine;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +20,11 @@ public class DatabaseSubroutine implements Subroutine
         String password = args[4];
         String sql = "";
         String result = "";
+
         for (int i=5; i < args.length; i++)
+        {
             sql += " " + args[i];
+        }
         sql = sql.trim();
 
         Connection connection = null;
@@ -30,10 +33,10 @@ public class DatabaseSubroutine implements Subroutine
 
         try
         {
-            connection=(Connection) DriverManager.getConnection(
+            connection = DriverManager.getConnection(
                     "jdbc:postgresql://" + host + ":" + port + "/" + db,
                     username, password);
-            statement=(Statement) connection.createStatement();
+            statement = connection.createStatement();
             resultSet=statement.executeQuery(sql);
             while(resultSet.next())
             {
@@ -50,7 +53,9 @@ public class DatabaseSubroutine implements Subroutine
                     }
                 }
                 if (!result.equals(""))
+                {
                     result += "\n";
+                }
             }
         }
         catch (SQLException ex)
