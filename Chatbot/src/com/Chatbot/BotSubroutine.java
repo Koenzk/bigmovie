@@ -2,7 +2,6 @@ package com.Chatbot;
 
 import com.rivescript.macro.Subroutine;
 import com.rivescript.util.StringUtils;
-import org.telegram.telegrambots.bots.DefaultAbsSender;
 
 import java.io.IOException;
 
