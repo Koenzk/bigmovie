@@ -120,6 +120,16 @@ public class Controller {
                     result = "title.principals.csv";
                     break;
                 }
+                case "title.crew.tsv": {
+                    pattern = "(tt\\d{7})(\\t)(.*)(\\t)(.*)";
+                    substitution = "$3, $5";
+                    header = new String[]{};
+                    linesToSkip = 1;
+                    option = "title_crew";
+                    substitutions = new int[]{3, 5};
+                    result = "title.crew";
+                    break;
+                }
                 default: {
                     pattern = "";
                     substitution = "";
@@ -272,6 +282,64 @@ public class Controller {
                         }
                         writer.flush();
                         writer.close();
+                        br.close();
+                        System.gc();
+                    } catch (IOException e) {
+                        pGui.addLog(e.toString());
+                    }
+                    break;
+                }
+                case "title_crew": {
+                    String prevName = "";
+                    try (BufferedWriter directors = new BufferedWriter(new FileWriter(outpath + ".directors.csv"));
+                         BufferedWriter writers = new BufferedWriter(new FileWriter(outpath + ".writers.csv"))
+                    ) {
+                        r = Pattern.compile(pattern);
+                        while (br.hasNextLine()) {
+                            nextLine = br.nextLine();
+                            if (++lineNumber <= lts) continue;
+
+                            matcher = r.matcher(nextLine);
+                            StringBuilder director = new StringBuilder();
+                            StringBuilder writer = new StringBuilder();
+
+                            if (matcher.find()) {
+                                prevName = matcher.group(1);
+                                for (String x : matcher.group(3).split(",")) {
+                                    if (!matcher.group(3).startsWith("\\N"))
+                                        director.append(prevName).append(";").append(x).append("\n");
+                                }
+                                for (String y : matcher.group(5).split(",")) {
+                                    if (!matcher.group(5).startsWith("\\N"))
+                                        writer.append(prevName).append(";").append(y).append("\n");
+                                }
+                                count++;
+                                if (director.toString().trim().length() != 0) {
+                                    directors.write(director.toString().trim());
+                                    directors.newLine();
+                                }
+
+                                if (writer.toString().trim().length() != 0) {
+                                    writers.write(writer.toString().trim());
+                                    writers.newLine();
+                                }
+
+                                if (lineNumber % 5000 == 0) {
+                                    if (director.toString().trim().length() != 0) {
+                                        pGui.addLog(director.toString().trim()); //prints converted data to log
+                                    }
+                                    if (writer.toString().trim().length() != 0) {
+                                        pGui.addLog(writer.toString().trim()); //prints converted data to log
+                                    }
+                                    pGui.updateProgressBar(count); //update progress bar
+                                    System.gc();
+                                }
+                            }
+                        }
+                        directors.flush();
+                        directors.close();
+                        writers.flush();
+                        writers.close();
                         br.close();
                         System.gc();
                     } catch (IOException e) {
