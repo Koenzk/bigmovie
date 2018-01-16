@@ -307,11 +307,11 @@ public class Controller {
                                 prevName = matcher.group(1);
                                 for (String x : matcher.group(3).split(",")) {
                                     if (!matcher.group(3).startsWith("\\N"))
-                                        director.append(prevName).append(";").append(x).append("\n");
+                                        director.append(prevName).append(";").append(x).append(";").append("director").append("\n");
                                 }
                                 for (String y : matcher.group(5).split(",")) {
                                     if (!matcher.group(5).startsWith("\\N"))
-                                        writer.append(prevName).append(";").append(y).append("\n");
+                                        writer.append(prevName).append(";").append(y).append(";").append("writer").append("\n");
                                 }
                                 count++;
                                 if (director.toString().trim().length() != 0) {
