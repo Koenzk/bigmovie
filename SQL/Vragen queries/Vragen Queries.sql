@@ -148,7 +148,7 @@
 --Getest en werkt	
 	SELECT count(original_title), start_year AS syear
 	FROM titles
-	WHERE start_year <= 2018 AND title_type = 'movie' AND original_title IN (
+	WHERE start_year <= date_part('year', CURRENT_DATE) AND title_type = 'movie' AND original_title IN (
 		SELECT title
 		FROM akas
 		WHERE types IS NULL AND is_original_title = false AND region = '(voer hier regio-code in)'
