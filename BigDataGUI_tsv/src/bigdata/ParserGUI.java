@@ -232,7 +232,11 @@ public class ParserGUI extends javax.swing.JFrame {
     }
 
     public void addLog(String string) {
-        jTextArea1.append(string + "\n");
+        if (jTextArea1.getText().length() < 2000) {
+            jTextArea1.append(string + "\n");
+        } else {
+            jTextArea1.setText(jTextArea1.getText().substring(string.length()) + string + "\n");
+        }
     }
 
     public void setProgressBar(int max) {
