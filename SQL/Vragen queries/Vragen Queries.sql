@@ -107,37 +107,54 @@
 	
 --7. Welke film heeft de hoogste score met de minste stemmen?
 --Getest en werkt
-SELECT primary_title
-FROM titles
-WHERE title_type = 'movie' AND
-tconst IN (
-    SELECT tconst
-    FROM ratings
-    WHERE (average_rating * num_votes) IN (
-        SELECT max(average_rating * num_votes)
-        FROM ratings
-    )
-)
+--De bovenste querie is onlangs toegevoegd, maar deze geeft een 9.3 met 19000000 stemmen, en de onderste querie een 10 met 5 stemmen. 
+--De onderste lijkt mij dus een beter antwoord geven dus ik laat ze beide eerst even staan.
+
+	SELECT primary_title
+	FROM titles
+	WHERE title_type = 'movie' AND tconst IN (
+		SELECT tconst
+		FROM ratings
+		WHERE (average_rating * num_votes) IN (
+			SELECT max(average_rating * num_votes)
+			FROM ratings
+		)
+	)
+
+	SELECT primary_title 
+	FROM titles
+	WHERE tconst IN (
+		SELECT tconst
+		FROM ratings
+		WHERE tconst IN (
+			SELECT tconst
+			FROM titles
+			WHERE title_type = 'movie'
+			)
+		ORDER BY num_votes ASC, average_rating DESC
+		LIMIT 1
+	);
 	
 --8. Maak een kaart (b.v. google maps / openstreetview) met landen waar een film speelt. Zodat op de kaart te zien is waar de films spelen. 
-	SELECT titles.primary_title, akas.region
-	FROM titles, akas
-	WHERE titles.original_title IN (
-		SELECT title
-		FROM akas
-		WHERE types IS NULL AND is_original_title = false AND region IS NOT NULL
+	SELECT title, region
+	FROM akas
+	WHERE types IS NULL AND is_original_title = false AND region IS NOT NULL AND title IN (
+		SELECT original_title
+		FROM titles
+		WHERE title_type = 'movie'
 	);
 	
 --9. Geef het aantal films dat in een land gemaakt is weer in de tijd. Dwz maak een grafiek waarin op de x-as het jaar staat en op de y-as het aantal gemaakte films
 --Getest en werkt	
-	SELECT count(original_title), start_year 
+	SELECT count(original_title), start_year AS syear
 	FROM titles
-	WHERE start_year <= 2018 AND original_title IN (
+	WHERE start_year <= date_part('year', CURRENT_DATE) AND title_type = 'movie' AND original_title IN (
 		SELECT title
 		FROM akas
 		WHERE types IS NULL AND is_original_title = false AND region = '(voer hier regio-code in)'
 	)
-	GROUP BY start_year
+	GROUP BY syear
+	ORDER BY syear ASC
 	
 	
 	
