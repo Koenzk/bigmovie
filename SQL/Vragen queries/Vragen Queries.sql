@@ -10,6 +10,7 @@
 	LIMIT 1;
 
 --2. Welke regisseur heeft de meeste films met Jim Carrey in de hoofdrol geregisseerd?
+--Getest en werkt
 	SELECT primary_name
 	FROM names
 	WHERE nconst IN (
@@ -23,6 +24,7 @@
 				FROM names
 				WHERE primary_name = 'Jim Carrey'
 			)
+			GROUP BY tconst
 			ORDER BY COUNT(tconst) DESC
 			LIMIT 1
 		)
@@ -65,6 +67,7 @@
 		WHERE average_rating >= 7.5
 	);
 	--Met naam
+	--Getest en werkt
 	SELECT primary_title
 	FROM titles
 	WHERE title_type = 'movie' AND tconst IN (
@@ -93,6 +96,7 @@
 	);
 	--Met naam
 	--Er zijn 48 Paul Walkers, door het geboortejaar wordt de goede gepakt.
+	--Getest en werkt
 	SELECT COUNT(tconst)
 	FROM titles
 	WHERE title_type = 'movie' AND (primary_title LIKE '%Fast%' OR primary_title LIKE '%Furious%') AND tconst IN (
@@ -143,6 +147,22 @@
 		FROM titles
 		WHERE title_type = 'movie'
 	);
+	
+--8b. Sommige films hebben een getal in hun titel (bijvoorbeeld: The Sixth Sense, Eight Days a week, Se7en). Maak een visuele weergave van het aantal malen dat een 
+--bepaald getal in een filmtitel voorkomt. Bonus: kijk of de Wet van Benford geldt.
+--Getest en werkt.
+	SELECT sum(case when (lower(primary_title) LIKE '%1%' OR lower(primary_title) LIKE '%one%' OR lower(primary_title) LIKE '%first%') then 1 end) AS no1,
+	sum(case when (lower(primary_title) LIKE '%2%' OR lower(primary_title) LIKE '%two%' OR lower(primary_title) LIKE '%second') then 1 end) AS no2,
+	sum(case when (lower(primary_title) LIKE '%3%' OR lower(primary_title) LIKE '%three%' OR lower(primary_title) LIKE '%third') then 1 end) AS no3,
+	sum(case when (lower(primary_title) LIKE '%4%' OR lower(primary_title) LIKE '%four%') then 1 end) AS no4,
+	sum(case when (lower(primary_title) LIKE '%5%' OR lower(primary_title) LIKE '%five%' OR lower(primary_title) LIKE '%fifth') then 1 end) AS no5,
+	sum(case when (lower(primary_title) LIKE '%6%' OR lower(primary_title) LIKE '%six%') then 1 end) AS no6,
+	sum(case when (lower(primary_title) LIKE '%7%' OR lower(primary_title) LIKE '%seven%') then 1 end) AS no7,
+	sum(case when (lower(primary_title) LIKE '%8%' OR lower(primary_title) LIKE '%eight') then 1 end) AS no8,
+	sum(case when (lower(primary_title) LIKE '%9%' OR lower(primary_title) LIKE '%nine%' OR lower(primary_title) LIKE '%ninth') then 1 end) AS no9,
+	sum(case when (lower(primary_title) LIKE '%0%' OR lower(primary_title) LIKE '%zero%') then 1 end) AS no0
+	FROM titles
+	WHERE title_type = 'movie'
 	
 --9. Geef het aantal films dat in een land gemaakt is weer in de tijd. Dwz maak een grafiek waarin op de x-as het jaar staat en op de y-as het aantal gemaakte films
 --Getest en werkt	
