@@ -1,0 +1,36 @@
+#install the needed packages
+
+install.packages("RPostgreSQL")
+install.packages("DBI")
+install.packages("ROCR")
+install.packages("gplots")
+library("ROCR")
+library("RPostgreSQL")
+library("gplots")
+library("DBI")
+
+#Create a connection to the database
+
+pg = dbDriver("PostgreSQL")
+con = dbConnect(pg, user="postgres", password="postgres", host="188.166.120.211", port=5432, dbname="bigmovie")
+
+#Create multiple variables for the barplot
+
+var1 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 1 AND titles.runtime_minutes <60 AND title_type = 'movie'")
+var2 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 60 AND titles.runtime_minutes <80 AND title_type = 'movie' ")
+var3 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 80 AND titles.runtime_minutes <100 AND title_type = 'movie'")
+var4 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 100 AND titles.runtime_minutes <120 AND title_type = 'movie' ")
+var5 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 120 AND titles.runtime_minutes <140 AND title_type = 'movie' ")
+var6 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 140 AND titles.runtime_minutes <160 AND title_type = 'movie' ")
+var7 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 160 AND titles.runtime_minutes <180 AND title_type = 'movie' ")
+var8 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN titles ON ratings.tconst=titles.tconst WHERE titles.runtime_minutes > 180 AND titles.runtime_minutes <200 AND title_type = 'movie' ")
+
+#Data for the chart
+H <- c(var1$avg, var2$avg, var3$avg, var4$avg, var5$avg, var6$avg, var7$avg, var8$avg)
+M <- c("0-60", "60-80", "80-100", "100-120", "120-140", "140-160", "160-180", "180-200")
+
+#Create a png
+png(file = "barchart.png")
+
+#Create the barplot
+barplot(H, names.arg = M, col=rainbow(20), ylim=c(6,7.5), main='Verband tussen de gemiddelde rating en de lengte van de film', xlab = "Lengte in minuten", family= "serif", space= 0)

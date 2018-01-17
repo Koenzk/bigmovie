@@ -7,16 +7,12 @@ package bigdata;
 
 import java.awt.event.ActionEvent;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
@@ -240,14 +236,14 @@ public class Controller {
 //                            writer.flush();
 //                            System.gc();
                             }
-                            writer.flush();
-                            System.gc();
+                            //writer.flush();
+                            //System.gc();
 //                        else continue;
                         }
-                        writer.flush();
+                        //writer.flush();
                         writer.close();
                         br.close();
-                        System.gc();
+                        //System.gc();
                     } catch (IOException e) {
                         pGui.addLog(e.toString());
                     }
