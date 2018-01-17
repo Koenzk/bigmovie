@@ -44,12 +44,14 @@
 	FROM names 
 	WHERE nconst IN (
         SELECT nconst
-        FROM titles
-        WHERE title_type = 'movie' AND tconst IN (
+        FROM titles_principals
+        WHERE tconst IN (
             SELECT tconst
             FROM ratings 
-            WHERE 
+            WHERE average_rating < 5
 		)
+		ORDER BY 
+		LIMIT 1
 	);
 	
 --4b. In welke films speelde Joop Braakhekke?
@@ -64,6 +66,7 @@
 	)
 
 --5. Welke films van Johnny Depp hebben een 7.5 of hoger?
+--Getest en werkt
 	--Met code
 	SELECT primary_title
 	FROM titles
@@ -78,7 +81,6 @@
 		WHERE average_rating >= 7.5
 	);
 	--Met naam
-	--Getest en werkt
 	SELECT primary_title
 	FROM titles
 	WHERE title_type = 'movie' AND tconst IN (
@@ -97,6 +99,7 @@
 	);
 
 --6. In hoeveel Fast And The Furious films speelde Paul Walker?
+--Getest en werkt
 	--Met code
 	SELECT COUNT(tconst)
 	FROM titles
@@ -107,7 +110,6 @@
 	);
 	--Met naam
 	--Er zijn 48 Paul Walkers, door het geboortejaar wordt de goede gepakt.
-	--Getest en werkt
 	SELECT COUNT(tconst)
 	FROM titles
 	WHERE title_type = 'movie' AND (primary_title LIKE '%Fast%' OR primary_title LIKE '%Furious%') AND tconst IN (
@@ -124,7 +126,6 @@
 --Getest en werkt
 --De bovenste querie is onlangs toegevoegd, maar deze geeft een 9.3 met 19000000 stemmen, en de onderste querie een 10 met 5 stemmen. 
 --De onderste lijkt mij dus een beter antwoord geven dus ik laat ze beide eerst even staan.
-
 	SELECT primary_title
 	FROM titles
 	WHERE title_type = 'movie' AND tconst IN (
@@ -151,6 +152,7 @@
 	);
 	
 --8. Maak een kaart (b.v. google maps / openstreetview) met landen waar een film speelt. Zodat op de kaart te zien is waar de films spelen. 
+--Getest en werkt
 	SELECT title, region
 	FROM akas
 	WHERE types IS NULL AND is_original_title = false AND region IS NOT NULL AND title IN (
