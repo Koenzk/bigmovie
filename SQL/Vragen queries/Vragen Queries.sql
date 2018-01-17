@@ -30,40 +30,43 @@
 		)
 	);	
 		
---3. Welke schrijvers spelen in hun eigen films en welke films zijn dat? 
-	SELECT c.nconst, t.primary_title
-	FROM titles AS t, titles_crew AS c
-	WHERE c.tconst IN (
-		SELECT p.tconst
-		FROM titles_principals AS p, titles_crew AS c
-		WHERE c.tconst = p.tconst AND c.role = 'writer'
-	);
-
---4. Welke acteur of actrice speelt het meest in de slechtst gewaardeerde films?
-	SELECT primary_name 
-	FROM names 
+--3. Welke acteur of actrice speelt het meest in de slechtst gewaardeerde films?
+--Getest en werkt
+--De query duurt wel lang, 49 sec..
+	SELECT primary_name
+	FROM names
 	WHERE nconst IN (
-        SELECT nconst
-        FROM titles_principals
-        WHERE tconst IN (
-            SELECT tconst
-            FROM ratings 
-            WHERE average_rating < 5
+		SELECT nconst
+		FROM titles_principals
+		WHERE tconst IN (
+			SELECT tconst
+			FROM titles
+			WHERE title_type = 'movie'
 		)
-		ORDER BY 
+        AND tconst IN (
+        	SELECT tconst
+    		FROM ratings
+        	GROUP BY average_rating, tconst
+            ORDER BY average_rating ASC
+        )
+        GROUP BY nconst
+		ORDER BY count(nconst) DESC
 		LIMIT 1
 	);
 	
---4b. In welke films speelde Joop Braakhekke?
+--4. In welke films speelde Joop Braakhekke?
 --Getest en werkt
-	SELECT primary_title FROM titles
+	SELECT primary_title 
+	FROM titles
 	WHERE tconst IN (
-		SELECT tconst FROM actors_titles
+		SELECT tconst 
+		FROM actors_titles
 		WHERE nconst IN (
-			SELECT nconst FROM names
+			SELECT nconst 
+			FROM names
 			WHERE primary_name = 'Joop Braakhekke'
 		)
-	)
+	);
 
 --5. Welke films van Johnny Depp hebben een 7.5 of hoger?
 --Getest en werkt
