@@ -101,9 +101,29 @@ public class Controller {
                     substitution = "$6, $8, $10, $12";
                     header = new String[]{};
                     linesToSkip = 1;
-                    option = "tabbed";
+                    option = "name_basics";
                     substitutions = new int[]{6, 8, 10, 12};
                     result = "name.basics.csv";
+                    break;
+                }
+                case "title.principals.tsv": {
+                    pattern = "(tt\\d{7})(\\t)(.*)";
+                    substitution = "$3,";
+                    header = new String[]{};
+                    linesToSkip = 1;
+                    option = "title_principals";
+                    substitutions = new int[]{3};
+                    result = "title.principals.csv";
+                    break;
+                }
+                case "title.crew.tsv": {
+                    pattern = "(tt\\d{7})(\\t)(.*)(\\t)(.*)";
+                    substitution = "$3, $5";
+                    header = new String[]{};
+                    linesToSkip = 1;
+                    option = "title_crew";
+                    substitutions = new int[]{3, 5};
+                    result = "title.crew";
                     break;
                 }
                 default: {
@@ -153,97 +173,177 @@ public class Controller {
             this.subs = subs;
         }
 
-//        public int countLines(String filename) throws IOException {
-//            InputStream is = new BufferedInputStream(new FileInputStream(filename));
-//            try {
-//                byte[] c = new byte[1024];
-//                int cnt = 0;
-//                int readChars = 0;
-//                boolean empty = true;
-//                while ((readChars = is.read(c)) != -1) {
-//                    empty = false;
-//                    for (int i = 0; i < readChars; ++i) {
-//                        if (c[i] == '\n') {
-//                            ++cnt;
-//                        }
-//                    }
-//                }
-//                return (cnt == 0 && !empty) ? 1 : cnt;
-//            } finally {
-//                is.close();
-//            }
-//        }
+        public int countLines(String filename) throws IOException {
+            InputStream is = new BufferedInputStream(new FileInputStream(filename));
+            try {
+                byte[] c = new byte[1024];
+                int cnt = 0;
+                int readChars = 0;
+                boolean empty = true;
+                while ((readChars = is.read(c)) != -1) {
+                    empty = false;
+                    for (int i = 0; i < readChars; ++i) {
+                        if (c[i] == '\n') {
+                            ++cnt;
+                        }
+                    }
+                }
+                return (cnt == 0 && !empty) ? 1 : cnt;
+            } finally {
+                is.close();
+            }
+        }
 
         @Override
         protected Void doInBackground() throws IOException {
             int lineNumber = 0;
             int lts = this.linesToSkip;
-//        pGui.setProgressBar(countLines(pGui.getInputPath()) - lts); //set progress bar length to amount of lines in file minus lts
-
+            pGui.setProgressBar(countLines(pGui.getInputPath()) - lts); //set progress bar length to amount of lines in file minus lts
             switch (option) {
-
-                case "tabbed": {
+                case "name_basics": {
                     String prevName = "";
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath))) {
                         r = Pattern.compile(pattern);
-//                    int i = 0;
                         while (br.hasNextLine()) {
                             nextLine = br.nextLine();
-//                        i++;
-//                        System.out.println(i);
                             if (++lineNumber <= lts) continue;
 
-                            System.out.println(nextLine);
                             matcher = r.matcher(nextLine);
-                            List<String> rows = new ArrayList<>();
+                            StringBuilder txt = new StringBuilder();
 
-//                        if (matcher.matches()){
-//                            matcher.reset();
                             if (matcher.find()) {
-//                                System.out.println("I break while finding");
                                 prevName = matcher.group(1);
                                 for (int i = 6; i < matcher.groupCount(); i += 2) {
-                                    rows.add(prevName);
                                     if (Objects.equals(matcher.group(i), null)) {
-//                                        System.out.println("I break while equalling");
-
-                                        rows.add(null);
                                     } else {
-//                                        System.out.println("I break while else");
-
-                                        rows.add("\t" + matcher.group(i));
+                                        txt.append(prevName).append(";").append(matcher.group(i)).append("\n");
                                     }
                                 }
+                                count++;
+                                if (txt.toString().trim().length() != 0) {
+                                    writer.write(txt.toString().trim());
+                                    writer.newLine();
+                                }
+
+                                if (lineNumber % 5000 == 0) {
+                                    if (txt.toString().trim().length() != 0) {
+                                        pGui.addLog(txt.toString().trim()); //prints converted data to log
+                                    }
+                                    pGui.updateProgressBar(count); //update progress bar
+                                    System.gc();
+                                }
                             }
-//                        }
 
-                            StringBuilder lineString = new StringBuilder();
+                        }
+                        writer.flush();
+                        writer.close();
+                        br.close();
+                        System.gc();
+                    } catch (IOException e) {
+                        pGui.addLog(e.toString());
+                    }
+                    break;
+                }
+                // /Users/MustiDarsh/Downloads/title.principals.tsv
+                case "title_principals": {
+                    String prevName = "";
+                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(outpath))) {
+                        r = Pattern.compile(pattern);
+                        while (br.hasNextLine()) {
+                            nextLine = br.nextLine();
+                            if (++lineNumber <= lts) continue;
 
-                            for (int j = 0; j < rows.size(); j += 2) {
-                                lineString.append(rows.get(j)).append(";").append(rows.get(j + 1)).append("\n");
+                            matcher = r.matcher(nextLine);
+                            StringBuilder txt = new StringBuilder();
+
+                            if (matcher.find()) {
+                                prevName = matcher.group(1);
+                                for (String x : matcher.group(3).split(",")) {
+                                    txt.append(prevName).append(";").append(x).append("\n");
+                                }
+                                count++;
+                                if (txt.toString().trim().length() != 0) {
+                                    writer.write(txt.toString().trim());
+                                    writer.newLine();
+                                }
+
+                                if (lineNumber % 5000 == 0) {
+                                    if (txt.toString().trim().length() != 0) {
+                                        pGui.addLog(txt.toString().trim()); //prints converted data to log
+                                    }
+                                    pGui.updateProgressBar(count); //update progress bar
+                                    System.gc();
+                                }
                             }
-
-
-                            result = matcher.replaceAll(substitution);
-//                        System.out.println(lineString);
-                            if (lineString.length() != 0) {
-//                            System.out.println("I break while writing");
-                                count++; //update current line count
-                                writer.write(lineString.toString().trim());
-                                pGui.addLog(lineString.toString().trim()); //prints converted data to log
-                                pGui.updateProgressBar(count); //update progress bar
-                                writer.newLine();
-//                            writer.flush();
-//                            System.gc();
-                            }
+<<<<<<< HEAD
                             //writer.flush();
                             //System.gc();
 //                        else continue;
+=======
+>>>>>>> 8ca6167ac9e0150604a5bfd11087c03f9d65218a
                         }
                         //writer.flush();
                         writer.close();
                         br.close();
                         //System.gc();
+                    } catch (IOException e) {
+                        pGui.addLog(e.toString());
+                    }
+                    break;
+                }
+                case "title_crew": {
+                    String prevName = "";
+                    try (BufferedWriter directors = new BufferedWriter(new FileWriter(outpath + ".directors.csv"));
+                         BufferedWriter writers = new BufferedWriter(new FileWriter(outpath + ".writers.csv"))
+                    ) {
+                        r = Pattern.compile(pattern);
+                        while (br.hasNextLine()) {
+                            nextLine = br.nextLine();
+                            if (++lineNumber <= lts) continue;
+
+                            matcher = r.matcher(nextLine);
+                            StringBuilder director = new StringBuilder();
+                            StringBuilder writer = new StringBuilder();
+
+                            if (matcher.find()) {
+                                prevName = matcher.group(1);
+                                for (String x : matcher.group(3).split(",")) {
+                                    if (!matcher.group(3).startsWith("\\N"))
+                                        director.append(prevName).append(";").append(x).append(";").append("director").append("\n");
+                                }
+                                for (String y : matcher.group(5).split(",")) {
+                                    if (!matcher.group(5).startsWith("\\N"))
+                                        writer.append(prevName).append(";").append(y).append(";").append("writer").append("\n");
+                                }
+                                count++;
+                                if (director.toString().trim().length() != 0) {
+                                    directors.write(director.toString().trim());
+                                    directors.newLine();
+                                }
+
+                                if (writer.toString().trim().length() != 0) {
+                                    writers.write(writer.toString().trim());
+                                    writers.newLine();
+                                }
+
+                                if (lineNumber % 5000 == 0) {
+                                    if (director.toString().trim().length() != 0) {
+                                        pGui.addLog(director.toString().trim()); //prints converted data to log
+                                    }
+                                    if (writer.toString().trim().length() != 0) {
+                                        pGui.addLog(writer.toString().trim()); //prints converted data to log
+                                    }
+                                    pGui.updateProgressBar(count); //update progress bar
+                                    System.gc();
+                                }
+                            }
+                        }
+                        directors.flush();
+                        directors.close();
+                        writers.flush();
+                        writers.close();
+                        br.close();
+                        System.gc();
                     } catch (IOException e) {
                         pGui.addLog(e.toString());
                     }
