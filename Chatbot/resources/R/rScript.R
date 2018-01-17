@@ -1,9 +1,9 @@
-#install the needed packages
+#install the needed packages 
 
-install.packages("RPostgreSQL")
-install.packages("DBI")
-install.packages("ROCR")
-install.packages("gplots")
+install.packages("RPostgreSQL",repos = "http://cran.r-project.org")
+install.packages("DBI",repos = "http://cran.r-project.org")
+install.packages("ROCR",repos = "http://cran.r-project.org")
+install.packages("gplots",repos = "http://cran.r-project.org")
 library("ROCR")
 library("RPostgreSQL")
 library("gplots")
@@ -30,7 +30,10 @@ H <- c(var1$avg, var2$avg, var3$avg, var4$avg, var5$avg, var6$avg, var7$avg, var
 M <- c("0-60", "60-80", "80-100", "100-120", "120-140", "140-160", "160-180", "180-200")
 
 #Create a png
+jpeg(file = "barchart.jpg")
 png(file = "barchart.png")
 
 #Create the barplot
 barplot(H, names.arg = M, col=rainbow(20), ylim=c(6,7.5), main='Verband tussen de gemiddelde rating en de lengte van de film', xlab = "Lengte in minuten", family= "serif", space= 0)
+
+dev.off()
