@@ -34,14 +34,15 @@
 + 90 minuten lang
 - Voor onze club uit amsterdam
 
-+ Waar komen joden toch vandaan?
-- Israel hier ver vandaan?
++ Waar komen joden toch vandaan
+- Israel hier ver vandaan!
 
-+ Wonen daar ook superjoden?
++ Wonen daar ook superjoden
 - Ja daar wonen superjoden!
 
-+ Vinden joden voetbal fijn?
++ Vinden joden voetbal fijn
 - Als ze maar voor ajax zijn!!! AMSTERDAM AMSTERDAM AMSTERDAM!
+
 + [*] examples [*]
 - Here some examples on how to program this bot using the RiveScript file: (these commands should be between call tags)\n
 ^ system [terminal command] -> execute terminal command on bot-machine
@@ -65,10 +66,10 @@
 - <call>jdbc localhost 3306 imdb imdb imdb select title from cast_info, name, title, kind_type where person_id = name.id and title.id = movie_id and kind_id = kind_type.id and name like '<star2>, <star>' and kind = 'movie'</call>
 
 // VOORBEELD: R script aanroepen
-+ [*] video formats [*]
++ [*] is er een verband tussen de lengte van een film en de rating [*]
 - There it is! 
-^ <call>system resources/R/video-format.R 2&> /dev/null</call>
-^ <call>send photo /tmp/video-format.jpg The graph produced by R</call>
+^ <call>system /home/koenzk/chatbot/R/rScript.R 2&> /dev/null</call>
+^ <call>send photo /tmp/barchart.jpg The graph produced by R</call>
 
 // Substitutions
 ! sub i'm     = i am
