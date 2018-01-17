@@ -51,6 +51,17 @@
             WHERE 
 		)
 	);
+	
+--4b. In welke films speelde Joop Braakhekke?
+--Getest en werkt
+	SELECT primary_title FROM titles
+	WHERE tconst IN (
+		SELECT tconst FROM actors_titles
+		WHERE nconst IN (
+			SELECT nconst FROM names
+			WHERE primary_name = 'Joop Braakhekke'
+		)
+	)
 
 --5. Welke films van Johnny Depp hebben een 7.5 of hoger?
 	--Met code
