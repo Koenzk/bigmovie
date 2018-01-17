@@ -15,3 +15,13 @@ out/
 
 # Thumbnails
 ._*
+
+# Microsoft Word, Excel, PowerPoint & Visio
+~$*.doc*
+~$*.xls*
+*.xlk
+~$*.ppt*
+*.~vsd*
+
+# Temp files
+*.tmp
