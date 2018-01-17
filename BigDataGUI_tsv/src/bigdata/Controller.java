@@ -275,12 +275,6 @@ public class Controller {
                                     System.gc();
                                 }
                             }
-<<<<<<< HEAD
-                            //writer.flush();
-                            //System.gc();
-//                        else continue;
-=======
->>>>>>> 8ca6167ac9e0150604a5bfd11087c03f9d65218a
                         }
                         //writer.flush();
                         writer.close();
