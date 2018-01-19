@@ -57,6 +57,7 @@
 --3b. Geef een overzicht van personen die meer dan 1 functie vervulden bij een film. Dwz èn schrijver èn regisseur waren, of èn acteur èn producer, etc.
 --Getest en werkt
 --Zonder limit krijg je 1,6 miljoen rows terug, maar dat duurt 30 seconden ipv 1 en ik zou niet weten hoe je al die data zou moeten afbeelden
+--Lijkt me wel heel veel data om via zo'n bot te krijgen.
 	SELECT primary_name
 	FROM names
 	WHERE primary_profession LIKE '%,%'
@@ -200,6 +201,39 @@
 	)
 	GROUP BY syear
 	ORDER BY syear ASC
+	
+	--Voor de aantallen in ranges
+	SELECT count(original_title)
+	FROM titles
+	WHERE start_year BETWEEN 1900 AND 1920 AND title_type = 'movie' AND original_title IN (
+		SELECT title
+		FROM akas
+		WHERE types IS NULL AND is_original_title = false AND region = 'NL'
+	)
+		
+--Random film
+	SELECT primary_title
+	FROM titles
+	WHERE title_type = 'movie' AND tconst in (
+		SELECT tconst 
+		FROM ratings
+		WHERE average_rating >= 6
+	)
+	ORDER BY RANDOM()
+	LIMIT 1
+	
+--Random serie
+	SELECT primary_title
+	FROM titles
+	WHERE title_type = 'tvSeries' AND tconst in (
+		SELECT tconst 
+		FROM ratings
+		WHERE average_rating >= 7
+	)
+	ORDER BY RANDOM()
+	LIMIT 1
+
+
 	
 	
 	
