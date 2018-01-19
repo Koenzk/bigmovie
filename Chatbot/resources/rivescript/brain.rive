@@ -53,14 +53,14 @@
 + test
 - There it is!
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
-^ <call>send photo /home/koenzk/chatbot/barchart2.jpg The graph produced by R</call>
+^ <call>send photo barchart2.jpg The graph produced by R</call>
 
 
 // C-vraag:
 + [*] is er een verband tussen de lengte van een film en de rating [*]
 - There it is!
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
-^ <call>send photo /home/koenzk/chatbot/barchart.jpg The graph produced by R</call>
+^ <call>send photo barchart.jpg The graph produced by R</call>
 
 
 // Bullshit bot commands:

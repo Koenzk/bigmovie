@@ -31,7 +31,6 @@ M <- c("0-60", "60-80", "80-100", "100-120", "120-140", "140-160", "160-180", "1
 
 #Create a png
 jpeg(file = "barchart.jpg")
-png(file = "barchart.png")
 
 #Create the barplot
 barplot(H, names.arg = M, col=rainbow(20), ylim=c(6,7.5), main='Verband tussen de gemiddelde rating en de lengte van de film', xlab = "Lengte in minuten", family= "serif", space= 0)
