@@ -1,5 +1,6 @@
 // brain.rive
 
+
 + hello
 - Hi there!
 
@@ -8,11 +9,8 @@
 - Splendid!
 - Couldn't be better!
 
-+ kut bot
-- Het spijt me!
-
 + [*] start [*]
-- I'm The_Best_IMDB_bot! Ask me questions about your favorite movies. Type /help for some example questions. Type /examples for explanation on RiveScript Chatbot features.
+- I'm The_Best_IMDB_bot! Ask me questions about your favorite movies. Type /help for some example questions.
 
 + [*] restart [*]
 - <call>bot restart</call>
@@ -24,6 +22,18 @@
 ^ show files\n
 ^ What are common video formats?
 
+// A-vragen:
++ wat is de kortste film met een waardering van 85 of hoger?
+- <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
+
+// C-vraag
++ [*] is er een verband tussen de lengte van een film en de rating [*]
+- There it is!
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
+^ <call>send photo /home/koenzk/chatbot/barchart.jpg The graph produced by R</call>
+
+
+// Bullshit bot commands:
 + oh oh
 - Den Haag, mooie stad achter de duinen! De schilderswijk, langepoten en het plein.
 
@@ -42,33 +52,9 @@
 + vinden joden voetbal fijn?
 - Als ze maar voor ajax zijn!!! AMSTERDAM AMSTERDAM AMSTERDAM!
 
-+ [*] examples [*]
-- Here some examples on how to program this bot using the RiveScript file: (these commands should be between call tags)\n
-^ system [terminal command] -> execute terminal command on bot-machine
-^ jdbc [server] [port] [database] [user] [password] [query] -> execute a SQL query at a database
-^ system resources/R/[Rscript.R] 2&> /dev/null -> execute a R script on the bot-machine
-^ send photo [location] [description] -> send a photo with a description
-
+// Everything the bot does not know
 + *
 - Not sure I got that. Type /help for some example questions.
-
-// VOORBEEL: terminal commands [1]
-+ show files
-- <call>system ls -l</call>
-
-// VOORBEEL: terminal commands [2]
-+ what is the date?
-- The date is: <call>system date</call>
-
-// VOORBEELD: SQL query
-+ which movies did _ _ *
-- <call>jdbc localhost 3306 imdb imdb imdb select title from cast_info, name, title, kind_type where person_id = name.id and title.id = movie_id and kind_id = kind_type.id and name like '<star2>, <star>' and kind = 'movie'</call>
-
-// VOORBEELD: R script aanroepen
-+ [*] is er een verband tussen de lengte van een film en de rating [*]
-- There it is! 
-^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
-^ <call>send photo /home/koenzk/chatbot/barchart.jpg The graph produced by R</call>
 
 // Substitutions
 ! sub i'm     = i am
