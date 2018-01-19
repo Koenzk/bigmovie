@@ -101,7 +101,7 @@ var11 <- dbGetQuery(con, "SELECT count(original_title)
 #Data for the chart
 H <- c(var1$count, var2$count, var3$count, var4$count, var5$count, var6$count, var7$count, var8$count, var9$count, var10$count, var11$count)
 
-jpeg(file = "barchart.jpg", width = 800, height = 600)
+jpeg(file = "barchart2.jpg", width = 800, height = 600)
 
 barplot(H, col=rainbow(11), main='Aantal films uit nederland', ylab = "Aantal", xlab = "Jaartal, legenda voor meer informatie.", family= "serif", space= 0)
 
