@@ -54,6 +54,15 @@
 		LIMIT 1
 	);
 	
+--3b. Geef een overzicht van personen die meer dan 1 functie vervulden bij een film. Dwz èn schrijver èn regisseur waren, of èn acteur èn producer, etc.
+--Getest en werkt
+--Zonder limit krijg je 1,6 miljoen rows terug, maar dat duurt 30 seconden ipv 1 en ik zou niet weten hoe je al die data zou moeten afbeelden
+	SELECT primary_name
+	FROM names
+	WHERE primary_profession LIKE '%,%'
+	ORDER BY nconst ASC
+	LIMIT 1000
+	
 --4. In welke films speelde Joop Braakhekke?
 --Getest en werkt
 	SELECT primary_title 
