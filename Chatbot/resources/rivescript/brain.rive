@@ -23,10 +23,16 @@
 ^ What are common video formats?
 
 // A-vragen:
-+ wat is de kortste film met een waardering van 85 of hoger?
-- <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
 
-// C-vraag
+// 1:
++ wat is de kortste film met een waardering van 85 of hoger?
+- There it is!
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
+
++ welke regisseur heeft de meeste films met jim carrey in de hoofdrol geregisseerd?
+- <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_crew WHERE role = 'director' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Jim Carrey') GROUP BY tconst ORDER BY COUNT(tconst) DESC LIMIT 1))</call>
+
+// C-vraag:
 + [*] is er een verband tussen de lengte van een film en de rating [*]
 - There it is!
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
@@ -35,10 +41,10 @@
 
 // Bullshit bot commands:
 + oh oh
-- Den Haag, mooie stad achter de duinen! De schilderswijk, langepoten en het plein.
+- Oh oh The Hague, nice city behind the dunes! The painter district, longlegs and the square.
 
 + oh oh den haag
-- Ik zou met niemand willen ruilen Meteen gaan huilen, als ik geen Hagenees zou zijn
+- I wouldn't want to trade with anyone, go cry immediately, if I were not to be a Hagenees
 
 + 90 minuten lang
 - Voor onze club uit amsterdam
