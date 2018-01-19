@@ -19,7 +19,7 @@ public class Main
         // Download latest RiveScript
         try
         {
-            FileUtils.copyURLToFile(new URL("https://pastebin.com/raw/dUeRdymq"), new File("/home/koenzk/chatbot/rivescript/brain.rive"), 1000, 1000);
+            FileUtils.copyURLToFile(new URL("https://raw.githubusercontent.com/Koenzk/bigmovie/master/Chatbot/resources/rivescript/brain.rive"), new File("/home/koenzk/chatbot/rivescript/brain.rive"), 2500, 2500);
         }
         catch (IOException e)
         {

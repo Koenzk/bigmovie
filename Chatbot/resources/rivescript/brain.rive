@@ -15,8 +15,7 @@
 - I'm The_Best_IMDB_bot! Ask me questions about your favorite movies. Type /help for some example questions. Type /examples for explanation on RiveScript Chatbot features.
 
 + [*] restart [*]
-- Restarting now, please wait!
-^ <call>bot restart</call>
+- <call>bot restart</call>
 
 + [*] help [*]
 - You can ask me questions like:\n
@@ -34,13 +33,13 @@
 + 90 minuten lang
 - Voor onze club uit amsterdam
 
-+ Waar komen joden toch vandaan
++ waar komen joden toch vandaan?
 - Israel hier ver vandaan!
 
-+ Wonen daar ook superjoden
++ wonen daar ook superjoden?
 - Ja daar wonen superjoden!
 
-+ Vinden joden voetbal fijn
++ vinden joden voetbal fijn?
 - Als ze maar voor ajax zijn!!! AMSTERDAM AMSTERDAM AMSTERDAM!
 
 + [*] examples [*]
@@ -68,8 +67,8 @@
 // VOORBEELD: R script aanroepen
 + [*] is er een verband tussen de lengte van een film en de rating [*]
 - There it is! 
-^ <call>system /home/koenzk/chatbot/R/rScript.R 2&> /dev/null</call>
-^ <call>send photo /tmp/barchart.jpg The graph produced by R</call>
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
+^ <call>send photo /home/koenzk/chatbot/barchart.jpg The graph produced by R</call>
 
 // Substitutions
 ! sub i'm     = i am
