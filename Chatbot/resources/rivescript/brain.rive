@@ -174,11 +174,11 @@
 
 + (do you know a nice movie|which movie do you recommend)
 - This one is nice!
-^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = ‘movie’AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1</call>
 
 + (which serie do you recommend| do you know a nice serie)
 - This is a great serie!
-^ <call> jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type =‘tvSeries’ AND tconst in ( SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1 </call>
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type ='tvSeries' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1</call>
 
 + [*] on tv tonight [*]
 - You can check that here http://www.tvgids.nl
