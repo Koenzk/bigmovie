@@ -213,7 +213,7 @@
 - Here it is. 
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN ( SELECT tconst FROM ratings WHERE tconst IN ( SELECT tconst FROM titles WHERE title_type = 'movie' ) ORDER BY num_votes ASC, average_rating DESC LIMIT 1)</call>
 
-+ (when were the most movies made in the netherlands| how many movies are there made in the netherlands)
++ (when were the most movies made in the netherlands|how many movies are there made in the netherlands)
 - Look what I found. 
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
 ^ <call>send photo barchart2.jpg The graph produced by R</call>
