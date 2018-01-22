@@ -166,6 +166,10 @@
 - Is something making you feel angry?
 - Does using that kind of language make you feel better?
 
+// IMPORTANT COMMANDS
++ [*] restart [*]
+- <call>bot restart</call>
+
 //RANDOM MOVIE TEXT
 
 + (do you know a nice movie|which movie do you recommend)
