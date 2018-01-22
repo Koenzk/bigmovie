@@ -135,16 +135,16 @@ LIMIT 10
 --Getest en werkt
 --De bovenste querie is onlangs toegevoegd, maar deze geeft een 9.3 met 19000000 stemmen, en de onderste querie een 10 met 5 stemmen. 
 --De onderste lijkt mij dus een beter antwoord geven dus ik laat ze beide eerst even staan.
-	SELECT primary_title
-	FROM titles
-	WHERE title_type = 'movie' AND tconst IN (
-		SELECT tconst
-		FROM ratings
-		WHERE (average_rating * num_votes) IN (
-			SELECT max(average_rating * num_votes)
-			FROM ratings
-		)
-	)
+--	SELECT primary_title
+--	FROM titles
+--	WHERE title_type = 'movie' AND tconst IN (
+--		SELECT tconst
+--		FROM ratings
+--		WHERE (average_rating * num_votes) IN (
+--			SELECT max(average_rating * num_votes)
+--			FROM ratings
+--		)
+--	)
 
 	SELECT primary_title 
 	FROM titles
