@@ -186,7 +186,7 @@
 //Movie Questions
 
 + [*] (movie|movies) [*] joop braakhekke [*]
-- This is what i found. \N
+- This is what i found. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN (SELECT tconst FROM actors_titles WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Joop Braakhekke'))</call>
 
 + [*] (movie|movies) [*] johnny depp [*] 75 * higher
