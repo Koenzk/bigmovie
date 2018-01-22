@@ -127,9 +127,9 @@
 - Maybe a nice movie will help you to cheer up.
 
 + my name is *
-- <set name=<star>> Nice to meet you <get name>.
-- <set name =<star>> <get name>, nice to meet you.
-- <set name =<star>> Pleased to meet you, <get name>.
+- Nice to meet you <star>.
+- Hello <star>, nice to meet you.
+- Pleased to meet you, <star>.
 
 + my name is #
 - <star> is not a real name.
@@ -166,15 +166,19 @@
 - Is something making you feel angry?
 - Does using that kind of language make you feel better?
 
+// IMPORTANT COMMANDS
++ [*] restart [*]
+- <call>bot restart</call>
+
 //RANDOM MOVIE TEXT
 
 + (do you know a nice movie|which movie do you recommend)
 - This one is nice!
-^<call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = ‘movie’AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = ‘movie’AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
 + (which serie do you recommend| do you know a nice serie)
 - This is a great serie!
-^<call> jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type =‘tvSeries’ AND tconst in ( SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1 </call>
+^ <call> jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type =‘tvSeries’ AND tconst in ( SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1 </call>
 
 + [*] on tv tonight [*]
 - You can check that here http://www.tvgids.nl
@@ -189,14 +193,14 @@
 - Here it is.
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Johnny Depp')) AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 7.5)</call>
 
-+[*] (how manny|how much) [*] fast and the furious * paul walker [*]
++[*] (how many|how much) [*] fast and the furious * paul walker [*]
 - Here it is.
 
 + * shortest movie [*] 85 * higher
 - Here it is.
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
 
-+ * director * (most|manny) [*] (movie|movies) [*] jim carrey [*] main role
++ * director * (most|many) [*] (movie|movies) [*] jim carrey [*] main role
 - Here it is.
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_crew WHERE role = 'director' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Jim Carrey') GROUP BY tconst ORDER BY COUNT(tconst) DESC LIMIT 1))</call>
 
@@ -210,15 +214,10 @@
 + [*] movie [*] highest rating [*] least (vote|votes)
 - Here it is.
 
-+ (when where the most movies made in the netherlands| how manny movies are there made in the netherlands)
-- Look what i found.
-
-// B-vragen:
-+ test
-- There it is!
++ (when where the most movies made in the netherlands| how many movies are there made in the netherlands)
+- Look what I found.
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
 ^ <call>send photo barchart2.jpg The graph produced by R</call>
-
 
 // C-vraag:
 + [*] is er een verband tussen de lengte van een film en de rating [*]
