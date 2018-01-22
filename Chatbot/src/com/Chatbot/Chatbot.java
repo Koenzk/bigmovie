@@ -89,11 +89,10 @@ public class Chatbot extends TelegramLongPollingBot
 
     @Override
     @SuppressWarnings("CallToPrintStackTrace")
-    public void onUpdateReceived(Update update)
-    {
+    public void onUpdateReceived(Update update) {
+
         // We check if the update has a message and the message has text
-        if (update.hasMessage() && update.getMessage().hasText())
-        {
+        if (update.hasMessage() && update.getMessage().hasText()) {
             // Set variables
             String message_text = update.getMessage().getText();
             long chat_id = update.getMessage().getChatId();
@@ -101,16 +100,18 @@ public class Chatbot extends TelegramLongPollingBot
             // Get reply
             String reply = bot.reply(String.valueOf(chat_id), message_text);
 
-            SendMessage message = new SendMessage() // Create a message object object
-                    .setChatId(chat_id)
-                    .setText(reply);
-            try
-            {
-                execute(message); // Sending our message object to user
-            }
-            catch (TelegramApiException e)
-            {
-                e.printStackTrace();
+            if(message_text.startsWith("give location")){
+                try {
+                    SendLocationMessage(reply, chat_id);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Say(reply, chat_id);
             }
         }
     }
