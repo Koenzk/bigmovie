@@ -23,11 +23,11 @@ public class Chatbot extends TelegramLongPollingBot
     Chatbot()
     {
         super();
-        bot.setSubroutine("system", new SystemSubroutine());
-        bot.setSubroutine("bot", new BotSubroutine());
-        bot.setSubroutine("jdbc", new DatabaseSubroutine());
-        bot.setSubroutine("send", new SendSubroutine(this));
-        bot.loadDirectory("/home/koenzk/chatbot/rivescript");
+        bot.setSubroutine("system", new com.Chatbot.SystemSubroutine());
+        bot.setSubroutine("bot", new com.Chatbot.BotSubroutine());
+        bot.setSubroutine("jdbc", new com.Chatbot.DatabaseSubroutine());
+        bot.setSubroutine("send", new com.Chatbot.SendSubroutine(this));
+        bot.loadDirectory("C:\\Users\\5wesl\\Desktop\\bigmovie\\Chatbot\\resources\\rivescript");
 //        bot.loadDirectory("resources/rivescript");
         bot.sortReplies();
     }
@@ -100,7 +100,7 @@ public class Chatbot extends TelegramLongPollingBot
             // Get reply
             String reply = bot.reply(String.valueOf(chat_id), message_text);
 
-            if(message_text.startsWith("give location")){
+            if(message_text.startsWith("Wolvega")){
                 try {
                     SendLocationMessage(reply, chat_id);
                 } catch (InterruptedException e) {
