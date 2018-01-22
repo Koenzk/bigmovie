@@ -54,6 +54,12 @@
 		LIMIT 1
 	);
 	
+--3b. Geef een overzicht van personen die meer dan 1 functie vervulden bij een film. Dwz èn schrijver èn regisseur waren, of èn acteur èn producer, etc.
+--Getest en gewerkt
+SELECT primary_name FROM names WHERE primary_profession LIKE '%,%'
+ORDER BY RANDOM()
+LIMIT 10
+	
 --4. In welke films speelde Joop Braakhekke?
 --Getest en werkt
 	SELECT primary_title 
