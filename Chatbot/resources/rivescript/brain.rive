@@ -215,13 +215,14 @@
 - Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN ( SELECT tconst FROM ratings WHERE tconst IN ( SELECT tconst FROM titles WHERE title_type = 'movie' ) ORDER BY num_votes ASC, average_rating DESC LIMIT 1)</call>
 
+// B-vragen
 + (when were the most movies made in the netherlands|how many movies are there made in the netherlands)
 - Look what I found.
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
 ^ <call>send photo barchart2.jpg The graph produced by R</call>
 
 // C-vraag:
-+ [*] is er een verband tussen de lengte van een film en de rating [*]
++ [*] relation [*] length [*] rating [*] (movie|movies)
 - There it is! 
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
 ^ <call>send photo barchart.jpg The graph produced by R</call>
