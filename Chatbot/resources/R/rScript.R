@@ -34,7 +34,7 @@ jpeg(file = "barchart.jpg", width = 1200, height = 1200)
 
 
 #Create the barplot
-barplot(H, col=rainbow(11), ylim=c(6 ,7.5), main='Verband tussen de gemiddelde rating en de lengte van de film', family= "serif", space= 0)
+barplot(H, col=rainbow(11), ylim=c(6 ,7.5), main='Verband tussen de gemiddelde rating \n en de lengte van de film', family= "serif", space= 0)
 
 legend("topleft", c("0-30", "30-60", "60-90", "90-120", "120-150", "150-180", "180-210"), cex=1.5, 
        bty="n", fill=rainbow(11));
