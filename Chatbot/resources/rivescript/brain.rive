@@ -227,13 +227,19 @@
 + (when were the most movies made in the netherlands|how many movies are there made in the netherlands)
 - Look what I found.
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
-^ <call>send photo barchart2.jpg The graph produced by R</call>
+^ <call>send photo barchart2.jpg Graph of the number of movies produced in the Netherlands</call>
+
++ law of benford
+- Look what I found.
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript3.R</call>
+^ <call>send photo barchart3.jpg Graph Benford's Law</call>
+^ Yes, the Law of Benford applies here
 
 // C-vraag:
 + [*] relation [*] length [*] rating [*] (movie|movies)
 - There it is! 
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
-^ <call>send photo barchart.jpg The graph produced by R</call>
+^ <call>send photo barchart.jpg Graph of the relation between the length and the rating of a movie</call>
 
 // Bullshit bot commands:
 + oh oh
