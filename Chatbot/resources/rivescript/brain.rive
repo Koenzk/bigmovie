@@ -192,7 +192,7 @@
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
 + [*] seen that (one|movie)
-% this one is nice!
+% this one is nice! [*]
 - Maybe this one then? \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
