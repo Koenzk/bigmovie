@@ -114,10 +114,10 @@
 - Come back soon!
 
 + how are you
-- I’m fine, how are you ?
+- I’m fine, how are you?
 - Couldn’t be better! You?
 - Great! You?
-- I’m good, how are you ?
+- I’m good, how are you?
 
 + [*](@goodmood)[*]
 % (im fine how are you|couldnt be better you| great you|im good how are you)
@@ -149,7 +149,7 @@
 + [*] tell [*] something about (yourself|you)
 - My name is <bot name>. I'm <bot age> years old. My birthday is on <bot birthday>
 
-+ *( kind of work do you do| do you do for living| for job do you have)
++ *( kind of work do you do|do you do for living|for job do you have)
 - I’m officially a <bot job>, but i also like to give advice on movies and series.
 
 + thanks louis
@@ -182,7 +182,7 @@
 ^ What’s on tv tonight? \n
 ^ In which movie does Joop Braakhekke play? \n
 ^ Is there a relation between the length and the rating of a movie? \n
-^ In how manny the fast and the furious movies plays Paul Walker? \n
+^ In how many the fast and the furious movies plays Paul Walker? \n
 
 
 //RANDOM MOVIE TEXT
@@ -192,7 +192,7 @@
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
 + [*] seen that (one|movie)
-% this one is nice! [*]
+% this one is nice [*]
 - Maybe this one then? \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
@@ -257,6 +257,9 @@
 
 + oh oh den haag
 - I wouldn't want to trade with anyone, go cry immediately, if I were not to be a Hagenees
+
++ [*] (feyenoord|ajax) [*]
+- FEYENOORD! FEYENOORD! FEYENOORD!
 
 + 90 minuten lang
 - FEYENOORD! FEYENOORD! FEYENOORD!
