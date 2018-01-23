@@ -30,7 +30,7 @@ H <- c(var1$avg, var2$avg, var3$avg, var4$avg, var5$avg, var6$avg, var7$avg)
 M <- c("0-30", "30-60", "60-90", "90-120", "120-150", "150-180", "180-210")
 
 #Create a png
-jpeg(file = "barchart.jpg")
+jpeg(file = "barchart.jpg", width = 1200, height = 1200)
 
 
 #Create the barplot
