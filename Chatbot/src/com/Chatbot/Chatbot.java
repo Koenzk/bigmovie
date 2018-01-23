@@ -18,6 +18,7 @@ import java.io.IOException;
 public class Chatbot extends TelegramLongPollingBot
 {
     private RiveScript bot = new RiveScript();
+    private String apikey = "AIzaSyA4edm9FhbojYzh1lUHcDdJy-ZTnJzQ9tg";
 
     // Constructor
     Chatbot()
@@ -32,44 +33,24 @@ public class Chatbot extends TelegramLongPollingBot
         bot.sortReplies();
     }
 
+    @Override
+    @SuppressWarnings("CallToPrintStackTrace")
+    public void onUpdateReceived(Update update) {
 
-    /**
-     * send a location message to the user
-     * @param usermsg message sent by the user depends on brain.rive
-     * @param cid chat id
-     */
-    public void SendLocationMessage(String usermsg, Long cid) throws InterruptedException, ApiException, IOException {
+        // We check if the update has a message and the message has text
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            // Set variables
+            String message_text = update.getMessage().getText();
+            long chat_id = update.getMessage().getChatId();
 
-        //TODO change to singleton
-        GeoApiContext context = new GeoApiContext.Builder() //creates a geoapicontext needed for using google maps api
-                .apiKey("AIzaSyAYSpNnEji7o1QmXORjyVzOc5aHYD1OxlU ") //sets the key to token
-                .build(); //builds context
-
-        GeocodingResult[] results = GeocodingApi.geocode( //create an array of geocoding results
-                context, //param conext
-                usermsg) //param message
-                .await(); //wait till all results are collected
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create(); //not needed but why not
-        if(results.length == 0){ //null check if the message is empty
-            Say("https://en.wikipedia.org/wiki/Nothing", cid);
-            return;
-        }
-
-        Say("I have found " + results.length + "results, here they are", cid);
-
-        for(int i = 0; i < results.length; i++) {
-            SendLocation message = new SendLocation() // Create a locations message object
-                    .setChatId(cid) //set chat id
-                    .setLatitude((float) results[0].geometry.location.lat) //set latitude
-                    .setLongitude((float) results[0].geometry.location.lng); //set longitude
-
-            try {
-                if (message != null)
-                    execute(message); // Sending our message object to user
-
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            if(message_text.startsWith("give location")){
+                try {
+                    SendLocationMessage(message_text, chat_id);
+                } catch (InterruptedException | IOException | ApiException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                SendRegularMessage(message_text, chat_id);
             }
         }
     }
@@ -87,31 +68,46 @@ public class Chatbot extends TelegramLongPollingBot
             }
     }
 
-    @Override
-    @SuppressWarnings("CallToPrintStackTrace")
-    public void onUpdateReceived(Update update) {
+    public void SendRegularMessage(String usermsg, Long cid){
+        Say(usermsg, cid);
+    }
 
-        // We check if the update has a message and the message has text
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            // Set variables
-            String message_text = update.getMessage().getText();
-            long chat_id = update.getMessage().getChatId();
+    /**
+     * send a location message to the user
+     * @param usermsg message sent by the user depends on brain.rive
+     * @param cid chat id
+     */
+    public void SendLocationMessage(String usermsg, Long cid) throws InterruptedException, ApiException, IOException {
 
-            // Get reply
-            String reply = bot.reply(String.valueOf(chat_id), message_text);
+        GeoApiContext context = new GeoApiContext.Builder() //creates a geoapicontext needed for using google maps api
+                .apiKey(apikey) //sets the key to token
+                .build(); //builds context
 
-            if(message_text.startsWith("Wolvega")){
-                try {
-                    SendLocationMessage(reply, chat_id);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ApiException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Say(reply, chat_id);
+
+        GeocodingResult[] results = GeocodingApi.geocode( //create an array of geocoding results
+                context, //param conext
+                usermsg) //param message
+                .await(); //wait till all results are collected
+
+        if(results.length == 0){ //null check if the message is empty
+            SendRegularMessage("https://en.wikipedia.org/wiki/Nothing", cid);
+            return;
+        }
+
+        SendRegularMessage("I have found " + results.length + "results, here they are", cid);
+
+        for(int i = 0; i < results.length; i++) {
+            SendLocation message = new SendLocation() // Create a locations message object
+                    .setChatId(cid) //set chat id
+                    .setLatitude((float) results[0].geometry.location.lat) //set latitude
+                    .setLongitude((float) results[0].geometry.location.lng); //set longitude
+
+            try {
+                if (message != null)
+                    execute(message); // Sending our message object to user
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -120,13 +116,13 @@ public class Chatbot extends TelegramLongPollingBot
     public String getBotUsername()
     {
         // Return bot username
-        return "The_Best_IMDB_bot";
+        return "Amsterdammer_bot";
     }
 
     @Override
     public String getBotToken()
     {
         // Return bot token from BotFather
-        return "365483835:AAHCHztOCwj8RcU0aDVXQb5RcGdp_aPAlSU";
+        return "544145072:AAEyqVbe-x0itYz2tdHdhmDuQTnlhG8N8bI";
     }
 }
