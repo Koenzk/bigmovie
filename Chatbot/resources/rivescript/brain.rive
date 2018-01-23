@@ -172,6 +172,14 @@
 + [*] restart [*]
 - <call>bot restart</call>
 
++ [*] help
+- Wat je mij zoal kunt vragen: \n 
+^ What’s on tv tonight? \n
+^ In which movie does Joop Braakhekke play? \n
+^ Is there a relation between the length and the rating of a movie? \n
+^ In how manny the fast and the furious movies plays Paul Walker? \n
+
+
 //RANDOM MOVIE TEXT
 
 + ([*] (movie|movies) [*] recommend|do you know a nice movie)
