@@ -29,8 +29,8 @@ var7 <-dbGetQuery(con, "SELECT AVG(average_rating) FROM ratings INNER JOIN title
 H <- c(var1$avg, var2$avg, var3$avg, var4$avg, var5$avg, var6$avg, var7$avg)
 M <- c("0-30", "30-60", "60-90", "90-120", "120-150", "150-180", "180-210")
 
-#Create a png
-jpeg(file = "barchart.jpg", width = 1200, height = 1200)
+#Create a png , width = 1200, height = 1200
+jpeg(file = "barchart.jpg")
 
 
 #Create the barplot
