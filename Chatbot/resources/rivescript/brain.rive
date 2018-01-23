@@ -108,6 +108,11 @@
 - Hello!
 - Hey!
 
++ (bye|cya|later|goodbye|see you|adios|auf wiedersehen)
+- See you later!
+- Bye!
+- Come back soon!
+
 + how are you
 - I’m fine, how are you ?
 - Couldn’t be better! You?
@@ -147,6 +152,8 @@
 + *( kind of work do you do| do you do for living| for job do you have)
 - I’m officially a <bot job>, but i also like to give advice on movies and series.
 
++ thanks louis
+- No problem!
 
 + *
 - The three points are inside.
@@ -170,14 +177,27 @@
 + [*] restart [*]
 - <call>bot restart</call>
 
++ [*] help
+- What you can ask me: \n 
+^ What’s on tv tonight? \n
+^ In which movie does Joop Braakhekke play? \n
+^ Is there a relation between the length and the rating of a movie? \n
+^ In how manny the fast and the furious movies plays Paul Walker? \n
+
+
 //RANDOM MOVIE TEXT
 
 + ([*] (movie|movies) [*] recommend|do you know a nice movie)
-- This one is nice! 
+- This one is nice! \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
+
++ [*] seen that (one|movie)
+% this one is nice! [*]
+- Maybe this one then? \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
 
 + ([*] (serie|series) [*] recommend|do you know a nice serie)
-- This is a great serie! 
+- This is a great serie! \n
 ^ <call> jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type ='tvSeries' AND tconst in ( SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1 </call>
 
 + [*] on tv tonight [*]
@@ -186,43 +206,50 @@
 //Movie Questions
 
 + [*] (movie|movies) [*] joop braakhekke [*]
-- This is what i found. 
+- This is what i found. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN (SELECT tconst FROM actors_titles WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Joop Braakhekke'))</call>
 
 + [*] (movie|movies) [*] johnny depp [*] 75 * higher
-- Here it is. 
+- Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Johnny Depp')) AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 7.5)</call>
 
 + [*] (how many|how much) [*] fast and the furious * paul walker [*]
-- Here it is. 
+- Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT COUNT(tconst) FROM titles WHERE title_type = 'movie' AND (primary_title LIKE '%Fast%' OR primary_title LIKE '%Furious%') AND tconst IN ( SELECT tconst FROM titles_principals WHERE nconst IN ( SELECT nconst FROM names WHERE primary_name = 'Paul Walker' AND birth_year = '1973' ))</call>
 
 + * shortest movie [*] 85 * higher
-- Here it is. 
+- Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
 
 + * director * (most|many) [*] (movie|movies) [*] jim carrey [*] main role
-- Here it is. 
+- Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_crew WHERE role = 'director' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Jim Carrey') GROUP BY tconst ORDER BY COUNT(tconst) DESC LIMIT 1))</call>
 
 + [*] (actor|actress) [*](play|played|plays) [*] most [*] worst rating
-- Here you have it. 
+- Here you have it. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_principals WHERE tconst IN (SELECT tconst FROM titles WHERE title_type = 'movie') AND tconst IN (SELECT tconst FROM ratings GROUP BY average_rating, tconst ORDER BY average_rating ASC) GROUP BY nconst ORDER BY count(nconst) DESC LIMIT 1)</call>
 
 + [*] movie [*] highest rating [*] least (vote|votes)
-- Here it is. 
+- Here it is. \n
 ^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN ( SELECT tconst FROM ratings WHERE tconst IN ( SELECT tconst FROM titles WHERE title_type = 'movie' ) ORDER BY num_votes ASC, average_rating DESC LIMIT 1)</call>
 
+// B-vragen
 + (when were the most movies made in the netherlands|how many movies are there made in the netherlands)
-- Look what I found. 
+- Look what I found.
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
-^ <call>send photo barchart2.jpg The graph produced by R</call>
+^ <call>send photo barchart2.jpg Graph of the number of movies produced in the Netherlands</call>
+
++ law of benford
+- Look what I found.
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript3.R</call>
+^ <call>send photo barchart3.jpg Graph Benford's Law</call>
+^ Yes, the Law of Benford applies here
 
 // C-vraag:
-+ [*] is er een verband tussen de lengte van een film en de rating [*]
-- There it is! 
++ [*] relation [*] length [*] rating [*] (movie|movies)
+- There it is!
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
-^ <call>send photo barchart.jpg The graph produced by R</call>
+^ <call>send photo barchart.jpg Graph of the relation between the length and the rating of a movie</call>
 
 // Bullshit bot commands:
 + oh oh
