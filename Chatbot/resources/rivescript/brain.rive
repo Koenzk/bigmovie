@@ -242,7 +242,7 @@
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
 ^ <call>send photo barchart2.jpg Graph of the number of movies produced in the Netherlands</call>
 
-+ law of benford
++ [*](number|numbers)[*]most[*] in a title
 - Look what I found.
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript3.R</call>
 ^ <call>send photo barchart3.jpg Graph Benford's Law</call>
