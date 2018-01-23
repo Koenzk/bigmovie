@@ -1,0 +1,16 @@
+Series
+
+Regular Expression: "\\\"(.*?)\\\"\\s\\((.*?)\\)\\s(\\{([^\\{].*?[^\\}])\\})?\\s*(\\{{(.*?)\\}})?\\s*(.{4,9})";
+
+Substitution: "\\1 \\2 \\4 \\6 \\7";
+
+Link: https://regex101.com/r/MmnHPV/5
+
+
+Movies
+
+Regular Expression: "\\s([^\"].*[^\"])\\s\\((.{4})\\)\\s(\\((.{1,2})\\))?\\s*(\\{{(.*?)\\}})?\\s*(\\d{4}|\\?{4})";
+
+Substitution: "\\1,\\2,\\4,\\6,\\7";
+
+Link: https://regex101.com/r/9fG4K1/6

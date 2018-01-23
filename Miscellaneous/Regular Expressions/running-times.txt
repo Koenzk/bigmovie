@@ -1,0 +1,7 @@
+Running times
+
+Regular expression: "(?:\"|)([^\"\\n]*)\"? \\((\\d{4}|[?]{4})\\W(?:.*\\{|.*\\))?(.*\\))?(?:.*\\t|.*:)((\\d)?(\\d)?(\\d)?(\\d))(?:.*)";
+
+Substitution: "\\1, \\2, \\3, \\4";
+
+Link: https://regex101.com/r/B5zs5v/5

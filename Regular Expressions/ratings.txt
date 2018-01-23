@@ -1,7 +1,0 @@
-Ratings
-
-Regular expression:  "(.{20}) ([0-9]\\.[0-9])  (.+) (?:\\((\\d{4}|\\?{4})(?:\\/([IVXCM]+))?\\)) ?(\\{(.+)\\}?)?";
-
-Substitution: "$2 $3 $4 $5";
-
-Link: https://regex101.com/r/vMu3Bj/3
