@@ -251,6 +251,13 @@
 ^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
 ^ <call>send photo barchart.jpg Graph of the relation between the length and the rating of a movie</call>
 
+// MAPS testing
++ give location *
+- There it is!
+^ <call>send location <star></call>
+// END MAPS testing
+
+
 // Bullshit bot commands:
 + oh oh
 - Oh oh The Hague, nice city behind the dunes! The painter district, longlegs and the square.
@@ -258,17 +265,5 @@
 + oh oh den haag
 - I wouldn't want to trade with anyone, go cry immediately, if I were not to be a Hagenees
 
-+ [*] (feyenoord|ajax) [*]
-- FEYENOORD! FEYENOORD! FEYENOORD!
-
 + 90 minuten lang
-- FEYENOORD! FEYENOORD! FEYENOORD!
-
-+ waar komen joden toch vandaan?
-- Israel hier ver vandaan!
-
-+ wonen daar ook superjoden?
-- Ja daar wonen superjoden!
-
-+ vinden joden voetbal fijn?
-- Als ze maar voor ajax zijn!!! AMSTERDAM AMSTERDAM AMSTERDAM!
+- Voor onze club uit Amsterdam!
