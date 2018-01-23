@@ -1,9 +1,9 @@
 #Remove hashtags to install the needed packages
 
-#install.packages("RPostgreSQL",repos = "http://cran.r-project.org")
-#install.packages("DBI",repos = "http://cran.r-project.org")
-#install.packages("ROCR" ,repos = "http://cran.r-project.org")
-#install.packages("gplots" ,repos = "http://cran.r-project.org")
+install.packages("RPostgreSQL",repos = "http://cran.r-project.org")
+install.packages("DBI",repos = "http://cran.r-project.org")
+install.packages("ROCR" ,repos = "http://cran.r-project.org")
+install.packages("gplots" ,repos = "http://cran.r-project.org")
 
 #Create a connection to the database
 
@@ -31,12 +31,17 @@ var1 <- dbGetQuery(con, "SELECT sum(case when (lower(primary_title) LIKE '%1%' O
                    WHERE title_type = 'movie'")
 
 #Create model
+benlaw <- function(d) log10(1 + 1 / d)
+digits <- 1:10
+digits[10] = 0
 
 #Data for the chart
 H <- c(var1$no1, var1$no2, var1$no3, var1$no4, var1$no5, var1$no6, var1$no7, var1$no8, var1$no9, var1$no0)
 
-jpeg(file = 'barchart3.jpg', width=800, height=600)
+jpeg(file = "barchart3.jpg", width = 800, height = 600)
 
-barplot(H, col=rainbow(10), main='Aantal films met getallen in de titel', names.arg = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"), ylab = 'Aantal films', space=0)
+bar <- barplot(H, col=rainbow(10), main='Aantal films met getallen in de titel', names.arg = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "0"), ylab = 'Aantal films waar getal in voorkomt', xlab="Het getal dat voorkomt", space=0)
+lines(x = bar[,1], y = (sum(H) * benlaw(digits)), col="gray", lwd=2,type="b", pch=23, cex=1.5,bg="gray")
+legend("topright", "Wet van Benford-curve", cex=1.5, bty="n", fill="gray")
 
-#dev.off()
+dev.off()
