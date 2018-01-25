@@ -18,9 +18,6 @@ public class BotSubroutine implements Subroutine
                 // restart java bot or reload brain.rive
                 restartApplication();
                 break;
-            default:
-                //
-                break;
         }
         return "";
     }
@@ -29,7 +26,9 @@ public class BotSubroutine implements Subroutine
     {
         try
         {
+            // Run new instance of java executable
             Runtime.getRuntime().exec("nohup java -jar /home/koenzk/chatbot/server.jar &");
+            // Terminate current executable
             System.exit(0);
         }
         catch (IOException e)

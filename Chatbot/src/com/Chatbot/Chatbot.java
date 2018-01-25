@@ -36,6 +36,7 @@ public class Chatbot extends TelegramLongPollingBot
             // Get reply
             String reply = bot.reply(String.valueOf(chat_id), message_text);
 
+            // Create a SendMessage object, chat_id = chat to send the message to | reply = the text the send to the chat
             SendMessage message = new SendMessage() // Create a message object object
                     .setChatId(chat_id)
                     .setText(reply);

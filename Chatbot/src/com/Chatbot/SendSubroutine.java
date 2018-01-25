@@ -36,9 +36,9 @@ public class SendSubroutine implements Subroutine
                 caption += " " + args[i]; // TODO: replace with StringBuilder/StringBuffer (better)
             caption = caption.trim();
             SendPhoto msg = new SendPhoto()
-                    .setChatId(rs.currentUser())
-                    .setNewPhoto(new File(photo))
-                    .setCaption(caption);
+                    .setChatId(rs.currentUser()) // set chat id of the chat to respond to
+                    .setNewPhoto(new File(photo)) // set respond photo
+                    .setCaption(caption); // set the caption under the photo
             try
             {
                 sender.sendPhoto(msg); // Call method to send the photo with caption
@@ -57,7 +57,7 @@ public class SendSubroutine implements Subroutine
 
             try
             {
-                sender.sendLocation(GetLocationMessage(location, rs.currentUser()));
+                sender.sendLocation(GetLocationMessage(location, rs.currentUser())); // Call method to send location
             }
             catch (Exception e)
             {
@@ -79,8 +79,8 @@ public class SendSubroutine implements Subroutine
                 .await(); //wait till all results are collected
 
         return new SendLocation()// Create a locations message object
-                .setChatId(cid)
-                .setLatitude((float) results[0].geometry.location.lat)
-                .setLongitude((float) results[0].geometry.location.lng);
+                .setChatId(cid) // Set chat id where message was received (to know where to respond)
+                .setLatitude((float) results[0].geometry.location.lat) // set latitude
+                .setLongitude((float) results[0].geometry.location.lng); // longitude
     }
 }
