@@ -1,0 +1,273 @@
+// BOT VARIABLES
+! var name = Louis
+! var fullname = Louis van Gaal
+! var age  = 66
+! var birthday = 8 August
+! var sex  = male
+! var job  = soccer coach
+
+// Substitutions
+! sub &quot;    = "
+! sub &apos;    = '
+! sub &amp;     = &
+! sub &lt;      = <
+! sub &gt;      = >
+! sub +         = plus
+! sub -         = minus
+! sub /         = divided
+! sub *         = times
+! sub i'm       = i am
+! sub i'd       = i would
+! sub i've      = i have
+! sub i'll      = i will
+! sub don't     = do not
+! sub isn't     = is not
+! sub you'd     = you would
+! sub you're    = you are
+! sub you've    = you have
+! sub you'll    = you will
+! sub he'd      = he would
+! sub he's      = he is
+! sub he'll     = he will
+! sub she'd     = she would
+! sub she's     = she is
+! sub she'll    = she will
+! sub they'd    = they would
+! sub they're   = they are
+! sub they've   = they have
+! sub they'll   = they will
+! sub we'd      = we would
+! sub we're     = we are
+! sub we've     = we have
+! sub we'll     = we will
+! sub whats     = what is
+! sub what's    = what is
+! sub what're   = what are
+! sub what've   = what have
+! sub what'll   = what will
+! sub can't     = can not
+! sub whos      = who is
+! sub who's     = who is
+! sub who'd     = who would
+! sub who'll    = who will
+! sub don't     = do not
+! sub didn't    = did not
+! sub it's      = it is
+! sub could've  = could have
+! sub couldn't  = could not
+! sub should've = should have
+! sub shouldn't = should not
+! sub would've  = would have
+! sub wouldn't  = would not
+! sub when's    = when is
+! sub when're   = when are
+! sub when'd    = when did
+! sub y         = why
+! sub u         = you
+! sub ur        = your
+! sub r         = are
+! sub n         = and
+! sub im        = i am
+! sub wat       = what
+! sub wats      = what is
+! sub ohh       = oh
+! sub becuse    = because
+! sub becasue   = because
+! sub becuase   = because
+! sub practise  = practice
+! sub its a     = it is a
+! sub fav       = favorite
+! sub fave      = favorite
+! sub yesi      = yes i
+! sub yetit     = yet it
+! sub iam       = i am
+! sub welli     = well i
+! sub wellit    = well it
+! sub amfine    = am fine
+! sub aman      = am an
+! sub amon      = am on
+! sub amnot     = am not
+! sub realy     = really
+! sub iamusing  = i am using
+! sub amleaving = am leaving
+! sub yuo       = you
+! sub youre     = you are
+! sub didnt     = did not
+! sub ain't     = is not
+! sub aint      = is not
+! sub wanna     = want to
+
+//Set arrays
+! array goodmood  = great splendid fine good
+! array badmood   = sad bad peevish mad angry notgood
+
+//GENERAL TEXT
+
++ (hello|hey|hi there)
+- Hi there!
+- Hello!
+- Hey!
+
++ (bye|cya|later|goodbye|see you|adios|auf wiedersehen)
+- See you later!
+- Bye!
+- Come back soon!
+
++ how are you
+- I’m fine, how are you?
+- Couldn’t be better! You?
+- Great! You?
+- I’m good, how are you?
+
++ [*](@goodmood)[*]
+% (im fine how are you|couldnt be better you| great you|im good how are you)
+- I’m glad to hear that.
+
++[*](@badmood)[*]
+%(im fine how are you|couldnt be better you| great you|im good how are you)
+- How is that possible?
+
++ *
+% how is that possible
+- Maybe a nice movie will help you to cheer up.
+
++ my name is *
+- Nice to meet you <star>.
+- Hello <star>, nice to meet you.
+- Pleased to meet you, <star>.
+
++ my name is #
+- <star> is not a real name.
+
++ and (your|your|yours) [*]
+% nice to meet you
+- My name is <bot name>
+
++ what [*] your name
+- My name is <bot name>, and what is your name ?
+
++ [*] tell [*] something about (yourself|you)
+- My name is <bot name>. I'm <bot age> years old. My birthday is on <bot birthday>
+
++ *( kind of work do you do|do you do for living|for job do you have)
+- I’m officially a <bot job>, but i also like to give advice on movies and series.
+
++ thanks louis
+- No problem!
+
++ (i am gonna|i will) watch *
+- Have fun!
+
++ *
+- The three points are inside.
+- That’s another cook.
+- In sports it is always the goals who are counting.
+- That is not very smart, that can i say.
+- We are running after the facts…
+- It’s a question of time.
+- The dead of the Gladiolus.
+- You can’t compare apples with pears.
+
++ [*] (fuck|fucker|shit|damn|shut up|bitch) [*]
+- Does it make you feel strong to use that kind of language?
+- Are you venting your feelings now?
+- Are you angry?
+- Does this topic make you feel angry?
+- Is something making you feel angry?
+- Does using that kind of language make you feel better?
+
+// IMPORTANT COMMANDS
++ [*] restart [*]
+- <call>bot restart</call>
+
++ [*] help
+- What you can ask me: \n 
+^ What’s on tv tonight? \n
+^ In which movie does Joop Braakhekke play? \n
+^ Is there a relation between the length and the rating of a movie? \n
+^ In how many the fast and the furious movies plays Paul Walker? \n
+
+
+//RANDOM MOVIE TEXT
+
++ ([*] (movie|movies) [*] recommend|do you know a nice movie)
+- This one is nice! \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
+
++ [*] seen that (one|movie)
+% this one is nice *
+- Maybe this one then? \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst in (SELECT tconst FROM ratings WHERE average_rating >+ 6) ORDER BY RANDOM () LIMIT 1 </call>
+
++ ([*] (serie|series) [*] recommend|do you know a nice serie)
+- This is a great serie! \n
+^ <call> jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type ='tvSeries' AND tconst in ( SELECT tconst FROM ratings WHERE average_rating >= 7) ORDER BY RANDOM() LIMIT 1 </call>
+
++ [*] on tv tonight [*]
+- You can check that here http://www.tvgids.nl
+
+//Movie Questions
+
++ [*] (movie|movies) [*] joop braakhekke [*]
+- This is what i found. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN (SELECT tconst FROM actors_titles WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Joop Braakhekke'))</call>
+
++ [*] (movie|movies) [*] johnny depp [*] 75 * higher
+- Here it is. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Johnny Depp')) AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 7.5)</call>
+
++ [*] (how many|how much) [*] fast and the furious * paul walker [*]
+- Here it is. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT COUNT(tconst) FROM titles WHERE title_type = 'movie' AND (primary_title LIKE '%Fast%' OR primary_title LIKE '%Furious%') AND tconst IN ( SELECT tconst FROM titles_principals WHERE nconst IN ( SELECT nconst FROM names WHERE primary_name = 'Paul Walker' AND birth_year = '1973' ))</call>
+
++ * shortest movie [*] 85 * higher
+- Here it is. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE title_type = 'movie' AND tconst IN (SELECT tconst FROM ratings WHERE average_rating >= 8.5) ORDER BY runtime_minutes ASC LIMIT 1</call>
+
++ * director * (most|many) [*] (movie|movies) [*] jim carrey [*] main role
+- Here it is. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_crew WHERE role = 'director' AND tconst IN (SELECT tconst FROM titles_principals WHERE nconst IN (SELECT nconst FROM names WHERE primary_name = 'Jim Carrey') GROUP BY tconst ORDER BY COUNT(tconst) DESC LIMIT 1))</call>
+
++ [*] (actor|actress) [*](play|played|plays) [*] most [*] worst rating
+- Here you have it. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_name FROM names WHERE nconst IN (SELECT nconst FROM titles_principals WHERE tconst IN (SELECT tconst FROM titles WHERE title_type = 'movie') AND tconst IN (SELECT tconst FROM ratings GROUP BY average_rating, tconst ORDER BY average_rating ASC) GROUP BY nconst ORDER BY count(nconst) DESC LIMIT 1)</call>
+
++ [*] movie [*] highest rating [*] least (vote|votes)
+- Here it is. \n
+^ <call>jdbc localhost 5432 bigmovie postgres postgres SELECT primary_title FROM titles WHERE tconst IN ( SELECT tconst FROM ratings WHERE tconst IN ( SELECT tconst FROM titles WHERE title_type = 'movie' ) ORDER BY num_votes ASC, average_rating DESC LIMIT 1)</call>
+
+// B-vragen
++ (when were the most movies made in the netherlands|how many movies are there made in the netherlands)
+- Look what I found.
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript2.R</call>
+^ <call>send photo barchart2.jpg Graph of the number of movies produced in the Netherlands</call>
+
++ [*](number|numbers)[*]most[*] in a title
+- Look what I found.
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript3.R</call>
+^ <call>send photo barchart3.jpg Graph Benford's Law</call>
+^ Yes, the Law of Benford applies here
+
+// C-vraag:
++ [*] relation [*] length [*] rating [*] (movie|movies)
+- There it is!
+^ <call>system R CMD BATCH /home/koenzk/chatbot/rScript.R</call>
+^ <call>send photo barchart.jpg Graph of the relation between the length and the rating of a movie</call>
+
+// MAPS testing
++ give location *
+- There it is!
+^ <call>send location <star></call>
+// END MAPS testing
+
+
+// Bullshit bot commands:
++ oh oh
+- Oh oh The Hague, nice city behind the dunes! The painter district, longlegs and the square.
+
++ oh oh den haag
+- I wouldn't want to trade with anyone, go cry immediately, if I were not to be a Hagenees
+
++ 90 minuten lang
+- Voor onze club uit Amsterdam!
+- Voor onze club uit Rotterdam!
